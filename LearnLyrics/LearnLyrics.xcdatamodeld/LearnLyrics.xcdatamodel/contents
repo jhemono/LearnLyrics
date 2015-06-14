@@ -1,4 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model name="Test1.xcdatamodel" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <elements/>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8118.17" systemVersion="14E26a" minimumToolsVersion="Automatic">
+    <entity name="Lyrics" syncable="YES">
+        <attribute name="language" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="ofSong" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Song" inverseName="lyrics" inverseEntity="Song" syncable="YES"/>
+        <relationship name="parts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LyricsPart" inverseName="ofLyrics" inverseEntity="LyricsPart" syncable="YES"/>
+    </entity>
+    <entity name="LyricsPart" syncable="YES">
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="ofLyrics" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Lyrics" inverseName="parts" inverseEntity="Lyrics" syncable="YES"/>
+    </entity>
+    <entity name="Song" syncable="YES">
+        <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="Transformable" syncable="YES"/>
+        <relationship name="lyrics" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Lyrics" inverseName="ofSong" inverseEntity="Lyrics" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Song" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="LyricsPart" positionX="-54" positionY="-9" width="128" height="90"/>
+        <element name="Lyrics" positionX="-36" positionY="9" width="128" height="90"/>
+    </elements>
 </model>
