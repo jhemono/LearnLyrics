@@ -13,8 +13,8 @@
 		861EDEBE1B2D9AE30004702F /* LyricsPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDEBC1B2D9AE30004702F /* LyricsPart.swift */; };
 		861EDEC11B2DD50C0004702F /* Song+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDEBF1B2DD50C0004702F /* Song+CoreDataProperties.swift */; };
 		861EDEC21B2DD50C0004702F /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDEC01B2DD50C0004702F /* Song.swift */; };
+		861EDEC41B2DD6290004702F /* SongsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDEC31B2DD6290004702F /* SongsViewController.swift */; };
 		86BF1D311B2D7D7B00C3EAC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BF1D301B2D7D7B00C3EAC9 /* AppDelegate.swift */; };
-		86BF1D331B2D7D7B00C3EAC9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BF1D321B2D7D7B00C3EAC9 /* ViewController.swift */; };
 		86BF1D361B2D7D7B00C3EAC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86BF1D341B2D7D7B00C3EAC9 /* Main.storyboard */; };
 		86BF1D391B2D7D7B00C3EAC9 /* LearnLyrics.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 86BF1D371B2D7D7B00C3EAC9 /* LearnLyrics.xcdatamodeld */; };
 		86BF1D3B1B2D7D7B00C3EAC9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86BF1D3A1B2D7D7B00C3EAC9 /* Assets.xcassets */; };
@@ -47,9 +47,9 @@
 		861EDEBC1B2D9AE30004702F /* LyricsPart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsPart.swift; sourceTree = "<group>"; };
 		861EDEBF1B2DD50C0004702F /* Song+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Song+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		861EDEC01B2DD50C0004702F /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
+		861EDEC31B2DD6290004702F /* SongsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsViewController.swift; sourceTree = "<group>"; };
 		86BF1D2D1B2D7D7B00C3EAC9 /* LearnLyrics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearnLyrics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86BF1D301B2D7D7B00C3EAC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		86BF1D321B2D7D7B00C3EAC9 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		86BF1D351B2D7D7B00C3EAC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		86BF1D381B2D7D7B00C3EAC9 /* LearnLyrics.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = LearnLyrics.xcdatamodel; sourceTree = "<group>"; };
 		86BF1D3A1B2D7D7B00C3EAC9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -111,8 +111,8 @@
 		86BF1D2F1B2D7D7B00C3EAC9 /* LearnLyrics */ = {
 			isa = PBXGroup;
 			children = (
+				861EDEC31B2DD6290004702F /* SongsViewController.swift */,
 				86BF1D301B2D7D7B00C3EAC9 /* AppDelegate.swift */,
-				86BF1D321B2D7D7B00C3EAC9 /* ViewController.swift */,
 				86BF1D341B2D7D7B00C3EAC9 /* Main.storyboard */,
 				86BF1D3A1B2D7D7B00C3EAC9 /* Assets.xcassets */,
 				86BF1D3C1B2D7D7B00C3EAC9 /* LaunchScreen.storyboard */,
@@ -221,6 +221,7 @@
 				TargetAttributes = {
 					86BF1D2C1B2D7D7A00C3EAC9 = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = 89T5H8QNM3;
 					};
 					86BF1D431B2D7D7B00C3EAC9 = {
 						CreatedOnToolsVersion = 7.0;
@@ -285,8 +286,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				861EDEC21B2DD50C0004702F /* Song.swift in Sources */,
+				861EDEC41B2DD6290004702F /* SongsViewController.swift in Sources */,
 				861EDEBA1B2D9AE20004702F /* Lyrics.swift in Sources */,
-				86BF1D331B2D7D7B00C3EAC9 /* ViewController.swift in Sources */,
 				861EDEC11B2DD50C0004702F /* Song+CoreDataProperties.swift in Sources */,
 				861EDEB91B2D9AE20004702F /* Lyrics+CoreDataProperties.swift in Sources */,
 				861EDEBE1B2D9AE30004702F /* LyricsPart.swift in Sources */,
@@ -434,11 +435,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = LearnLyrics/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gwiad.LearnLyrics;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -446,11 +450,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = LearnLyrics/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.gwiad.LearnLyrics;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
