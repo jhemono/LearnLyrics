@@ -12,8 +12,8 @@
     </entity>
     <entity name="Song" representedClassName=".Song" syncable="YES">
         <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="persistentIDMP" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="url" optional="YES" attributeType="Transformable" syncable="YES"/>
         <relationship name="lyrics" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Lyrics" inverseName="ofSong" inverseEntity="Lyrics" syncable="YES"/>
     </entity>
     <elements>
