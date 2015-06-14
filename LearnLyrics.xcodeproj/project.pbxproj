@@ -105,7 +105,7 @@
 				86BF1D3A1B2D7D7B00C3EAC9 /* Assets.xcassets */,
 				86BF1D3C1B2D7D7B00C3EAC9 /* LaunchScreen.storyboard */,
 				86BF1D3F1B2D7D7B00C3EAC9 /* Info.plist */,
-				86BF1D371B2D7D7B00C3EAC9 /* LearnLyrics.xcdatamodeld */,
+				86F996D51B2D89E800CFBA12 /* Model */,
 			);
 			path = LearnLyrics;
 			sourceTree = "<group>";
@@ -126,6 +126,14 @@
 				86BF1D551B2D7D7B00C3EAC9 /* Info.plist */,
 			);
 			path = LearnLyricsUITests;
+			sourceTree = "<group>";
+		};
+		86F996D51B2D89E800CFBA12 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				86BF1D371B2D7D7B00C3EAC9 /* LearnLyrics.xcdatamodeld */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -489,6 +497,7 @@
 				86BF1D5A1B2D7D7B00C3EAC9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		86BF1D5B1B2D7D7B00C3EAC9 /* Build configuration list for PBXNativeTarget "LearnLyricsTests" */ = {
 			isa = XCConfigurationList;
@@ -497,6 +506,7 @@
 				86BF1D5D1B2D7D7B00C3EAC9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		86BF1D5E1B2D7D7B00C3EAC9 /* Build configuration list for PBXNativeTarget "LearnLyricsUITests" */ = {
 			isa = XCConfigurationList;
@@ -505,6 +515,7 @@
 				86BF1D601B2D7D7B00C3EAC9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
