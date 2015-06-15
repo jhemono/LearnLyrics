@@ -8,9 +8,13 @@
 
 import UIKit
 
-private let reuseIdentifier = "Cell"
+protocol LyricsControllerDelegate {
+    
+}
 
 class LyricsController: UICollectionViewController {
+    
+    var lyrics: Lyrics?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,7 +23,7 @@ class LyricsController: UICollectionViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: reuseIdentifier)
+        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.LyricsPartCellReuseIdentifier)
 
         // Do any additional setup after loading the view.
     }
@@ -53,7 +57,7 @@ class LyricsController: UICollectionViewController {
     }
 
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(reuseIdentifier, forIndexPath: indexPath)
+        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.LyricsPartCellReuseIdentifier, forIndexPath: indexPath)
     
         // Configure the cell
     

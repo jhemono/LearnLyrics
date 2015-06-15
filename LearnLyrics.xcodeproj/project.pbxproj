@@ -92,6 +92,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		861EDEC91B2EDBF60004702F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				861EDEC31B2DD6290004702F /* SongsViewController.swift */,
+				861EDEC51B2ED9120004702F /* NowPlayingController.swift */,
+				861EDEC71B2ED9450004702F /* LyricsController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		86BF1D241B2D7D7A00C3EAC9 = {
 			isa = PBXGroup;
 			children = (
@@ -115,11 +125,9 @@
 		86BF1D2F1B2D7D7B00C3EAC9 /* LearnLyrics */ = {
 			isa = PBXGroup;
 			children = (
-				861EDEC31B2DD6290004702F /* SongsViewController.swift */,
-				861EDEC51B2ED9120004702F /* NowPlayingController.swift */,
+				861EDEC91B2EDBF60004702F /* Controllers */,
 				86BF1D301B2D7D7B00C3EAC9 /* AppDelegate.swift */,
 				86BF1D341B2D7D7B00C3EAC9 /* Main.storyboard */,
-				861EDEC71B2ED9450004702F /* LyricsController.swift */,
 				86BF1D3A1B2D7D7B00C3EAC9 /* Assets.xcassets */,
 				86BF1D3C1B2D7D7B00C3EAC9 /* LaunchScreen.storyboard */,
 				86BF1D3F1B2D7D7B00C3EAC9 /* Info.plist */,

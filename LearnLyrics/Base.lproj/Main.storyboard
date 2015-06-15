@@ -60,7 +60,7 @@
             </objects>
             <point key="canvasLocation" x="1641" y="217"/>
         </scene>
-        <!--Now Playing Controller-->
+        <!--Now Playing-->
         <scene sceneID="0Rd-ji-tLK">
             <objects>
                 <viewController id="uF3-Sh-d7y" customClass="NowPlayingController" customModule="LearnLyrics" customModuleProvider="target" sceneMemberID="viewController">
@@ -93,10 +93,102 @@
                             <constraint firstItem="grU-qC-2bj" firstAttribute="top" secondItem="EIK-yX-GfZ" secondAttribute="bottom" id="hbp-cJ-E6S"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" title="Now Playing" id="s7H-vu-Sjh">
+                        <barButtonItem key="backBarButtonItem" title="Now Playing" id="y8N-Yh-umi"/>
+                        <barButtonItem key="rightBarButtonItem" title="Languages" id="6um-BW-gv5">
+                            <connections>
+                                <segue destination="Vbc-2C-Dc3" kind="popoverPresentation" popoverAnchorBarButtonItem="6um-BW-gv5" id="uDC-Yc-Z0q">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YkT-S9-FFy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2451" y="217"/>
+        </scene>
+        <!--Languages-->
+        <scene sceneID="lTQ-vx-3kP">
+            <objects>
+                <tableViewController id="VCz-t2-Npr" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="q0f-gz-bwt">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="Language Cell" id="Bgh-0o-AFA">
+                                <rect key="frame" x="0.0" y="86" width="600" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Bgh-0o-AFA" id="FrZ-EE-sOt">
+                                    <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="VCz-t2-Npr" id="gwm-iO-fe4"/>
+                            <outlet property="delegate" destination="VCz-t2-Npr" id="SR4-sa-iss"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Languages" id="dI9-8l-9rz">
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="0ih-Ck-ltJ"/>
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="R3J-Xq-sb6">
+                            <connections>
+                                <segue destination="d6H-RV-oAe" kind="presentation" id="fjr-N1-X5U"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cND-gH-3xF" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3983" y="-516"/>
+        </scene>
+        <!--Add Lyrics-->
+        <scene sceneID="EIm-aP-B1L">
+            <objects>
+                <tableViewController id="sqi-7q-63c" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="4oF-yV-gtp">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <sections>
+                            <tableViewSection headerTitle="Select a language for your lyrics" id="Npm-pn-79R">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="254" id="X7q-RD-ryP">
+                                        <rect key="frame" x="0.0" y="114" width="600" height="254"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="X7q-RD-ryP" id="LKQ-RO-hpA">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="253"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N9l-cW-qZk">
+                                                    <rect key="frame" x="8" y="8" width="584" height="237"/>
+                                                </pickerView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="N9l-cW-qZk" secondAttribute="trailing" id="GEM-4X-O7e"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="N9l-cW-qZk" secondAttribute="bottom" id="UJC-HC-dsi"/>
+                                                <constraint firstItem="N9l-cW-qZk" firstAttribute="leading" secondItem="LKQ-RO-hpA" secondAttribute="leadingMargin" id="bDv-0i-2Ot"/>
+                                                <constraint firstItem="N9l-cW-qZk" firstAttribute="top" secondItem="LKQ-RO-hpA" secondAttribute="topMargin" id="lKn-Ga-aSX"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="sqi-7q-63c" id="KiC-Wr-cbL"/>
+                            <outlet property="delegate" destination="sqi-7q-63c" id="rch-uh-lY5"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Add Lyrics" id="zQg-qG-Rxe">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="944-V8-dP3"/>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4qh-C3-aeZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5565" y="-516"/>
         </scene>
         <!--Collection View Controller-->
         <scene sceneID="eUX-9L-Kci">
@@ -149,6 +241,42 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tE2-ys-8Mb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="829" y="217"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="NM7-ND-vck">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Vbc-2C-Dc3" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="BVE-fP-teZ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="VCz-t2-Npr" kind="relationship" relationship="rootViewController" id="xPN-Lx-w6e"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W39-tV-4fG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3171" y="-516"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="jmB-zm-2aC">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="d6H-RV-oAe" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="m90-Jk-dYt">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="sqi-7q-63c" kind="relationship" relationship="rootViewController" id="Ndd-0m-b8i"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K7V-SP-GVv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4753" y="-516"/>
         </scene>
     </scenes>
 </document>
