@@ -27,6 +27,12 @@ class NowPlayingController: UIViewController, SafeSegue {
     // MARK: - Navigation
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        switch segueIdentifierForSegue(segue) {
+        case .SelectLyrics:
+            break
+        case .EmbedLyrics:
+            break
+        }
     }
     
     enum SegueIdentifiers: String {
