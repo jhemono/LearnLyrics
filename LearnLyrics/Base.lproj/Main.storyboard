@@ -97,7 +97,7 @@
                         <barButtonItem key="backBarButtonItem" title="Now Playing" id="y8N-Yh-umi"/>
                         <barButtonItem key="rightBarButtonItem" title="Languages" id="6um-BW-gv5">
                             <connections>
-                                <segue destination="Vbc-2C-Dc3" kind="popoverPresentation" popoverAnchorBarButtonItem="6um-BW-gv5" id="uDC-Yc-Z0q">
+                                <segue destination="Vbc-2C-Dc3" kind="popoverPresentation" identifier="Select Lyrics" popoverAnchorBarButtonItem="6um-BW-gv5" id="uDC-Yc-Z0q">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
                             </connections>
@@ -111,7 +111,7 @@
         <!--Languages-->
         <scene sceneID="lTQ-vx-3kP">
             <objects>
-                <tableViewController id="VCz-t2-Npr" sceneMemberID="viewController">
+                <tableViewController id="VCz-t2-Npr" customClass="SelectLyricsController" customModule="LearnLyrics" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="q0f-gz-bwt">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

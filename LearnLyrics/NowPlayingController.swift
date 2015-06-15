@@ -29,7 +29,8 @@ class NowPlayingController: UIViewController, SafeSegue {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         switch segueIdentifierForSegue(segue) {
         case .SelectLyrics:
-            break
+            let lyricsVC = segue.destinationViewController.contentViewController as! LyricsController
+            lyricsVC.lyrics = song?.mutableSetValueForKey("lyrics")
         case .EmbedLyrics:
             break
         }
