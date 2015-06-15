@@ -90,5 +90,9 @@ class LyricsController: UICollectionViewController {
     
     }
     */
+    
+    private struct Constants {
+        static let LyricsPartCellReuseIdentifier = "LyricsPart Cell"
+    }
 
 }

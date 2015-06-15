@@ -9,6 +9,8 @@
 import UIKit
 
 class NowPlayingController: UIViewController {
+    
+    var song: Song?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,14 +24,13 @@ class NowPlayingController: UIViewController {
     }
     
 
-    /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
     }
-    */
+    
+    private struct Constants {
+        static let LyricsEmbedSegue = "Embed Lyrics"
+    }
 
 }
