@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NowPlayingController: UIViewController {
+class NowPlayingController: UIViewController, SafeSegue {
     
     var song: Song?
 
@@ -29,8 +29,9 @@ class NowPlayingController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     }
     
-    private struct Constants {
-        static let LyricsEmbedSegue = "Embed Lyrics"
+    enum SegueIdentifiers: String {
+        case EmbedLyrics = "Embed Lyrics"
+        case SelectLyrics = "Select Lyrics"
     }
 
 }
