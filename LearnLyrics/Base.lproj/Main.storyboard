@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8101.14"/>
     </dependencies>
     <scenes>
-        <!--Title-->
+        <!--My songs-->
         <scene sceneID="LuT-AL-kp2">
             <objects>
                 <tableViewController id="Xzu-Xl-go4" customClass="SongsViewController" customModule="LearnLyrics" customModuleProvider="target" sceneMemberID="viewController">
@@ -44,7 +44,7 @@
                             <outlet property="delegate" destination="Xzu-Xl-go4" id="8Lf-C5-IFp"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="OIe-qe-XWN">
+                    <navigationItem key="navigationItem" title="My songs" id="OIe-qe-XWN">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="o55-i3-aPN">
                             <connections>
                                 <action selector="addSongFromLibrary:" destination="Xzu-Xl-go4" id="JsF-mk-6jg"/>
