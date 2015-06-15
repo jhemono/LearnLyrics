@@ -14,6 +14,8 @@
 		861EDEC11B2DD50C0004702F /* Song+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDEBF1B2DD50C0004702F /* Song+CoreDataProperties.swift */; };
 		861EDEC21B2DD50C0004702F /* Song.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDEC01B2DD50C0004702F /* Song.swift */; };
 		861EDEC41B2DD6290004702F /* SongsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDEC31B2DD6290004702F /* SongsViewController.swift */; };
+		861EDEC61B2ED9120004702F /* NowPlayingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDEC51B2ED9120004702F /* NowPlayingController.swift */; };
+		861EDEC81B2ED9450004702F /* LyricsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDEC71B2ED9450004702F /* LyricsController.swift */; };
 		86BF1D311B2D7D7B00C3EAC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BF1D301B2D7D7B00C3EAC9 /* AppDelegate.swift */; };
 		86BF1D361B2D7D7B00C3EAC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86BF1D341B2D7D7B00C3EAC9 /* Main.storyboard */; };
 		86BF1D391B2D7D7B00C3EAC9 /* LearnLyrics.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 86BF1D371B2D7D7B00C3EAC9 /* LearnLyrics.xcdatamodeld */; };
@@ -48,6 +50,8 @@
 		861EDEBF1B2DD50C0004702F /* Song+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Song+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		861EDEC01B2DD50C0004702F /* Song.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Song.swift; sourceTree = "<group>"; };
 		861EDEC31B2DD6290004702F /* SongsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SongsViewController.swift; sourceTree = "<group>"; };
+		861EDEC51B2ED9120004702F /* NowPlayingController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NowPlayingController.swift; sourceTree = "<group>"; };
+		861EDEC71B2ED9450004702F /* LyricsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LyricsController.swift; sourceTree = "<group>"; };
 		86BF1D2D1B2D7D7B00C3EAC9 /* LearnLyrics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearnLyrics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86BF1D301B2D7D7B00C3EAC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		86BF1D351B2D7D7B00C3EAC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -112,8 +116,10 @@
 			isa = PBXGroup;
 			children = (
 				861EDEC31B2DD6290004702F /* SongsViewController.swift */,
+				861EDEC51B2ED9120004702F /* NowPlayingController.swift */,
 				86BF1D301B2D7D7B00C3EAC9 /* AppDelegate.swift */,
 				86BF1D341B2D7D7B00C3EAC9 /* Main.storyboard */,
+				861EDEC71B2ED9450004702F /* LyricsController.swift */,
 				86BF1D3A1B2D7D7B00C3EAC9 /* Assets.xcassets */,
 				86BF1D3C1B2D7D7B00C3EAC9 /* LaunchScreen.storyboard */,
 				86BF1D3F1B2D7D7B00C3EAC9 /* Info.plist */,
@@ -286,6 +292,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				861EDEC21B2DD50C0004702F /* Song.swift in Sources */,
+				861EDEC61B2ED9120004702F /* NowPlayingController.swift in Sources */,
 				861EDEC41B2DD6290004702F /* SongsViewController.swift in Sources */,
 				861EDEBA1B2D9AE20004702F /* Lyrics.swift in Sources */,
 				861EDEC11B2DD50C0004702F /* Song+CoreDataProperties.swift in Sources */,
@@ -294,6 +301,7 @@
 				86BF1D311B2D7D7B00C3EAC9 /* AppDelegate.swift in Sources */,
 				861EDEBD1B2D9AE30004702F /* LyricsPart+CoreDataProperties.swift in Sources */,
 				86BF1D391B2D7D7B00C3EAC9 /* LearnLyrics.xcdatamodeld in Sources */,
+				861EDEC81B2ED9450004702F /* LyricsController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
