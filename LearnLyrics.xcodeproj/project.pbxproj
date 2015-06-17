@@ -19,6 +19,7 @@
 		861EDECC1B2EFD430004702F /* Segue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDECB1B2EFD430004702F /* Segue.swift */; };
 		861EDECE1B2EFFF40004702F /* UIViewControllerExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDECD1B2EFFF40004702F /* UIViewControllerExtensions.swift */; };
 		861EDED41B2F15F30004702F /* SelectLyricsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDED31B2F15F30004702F /* SelectLyricsController.swift */; };
+		861EDED61B2F19800004702F /* FetchedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 861EDED51B2F19800004702F /* FetchedTableViewController.swift */; };
 		86BF1D311B2D7D7B00C3EAC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BF1D301B2D7D7B00C3EAC9 /* AppDelegate.swift */; };
 		86BF1D361B2D7D7B00C3EAC9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86BF1D341B2D7D7B00C3EAC9 /* Main.storyboard */; };
 		86BF1D391B2D7D7B00C3EAC9 /* LearnLyrics.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 86BF1D371B2D7D7B00C3EAC9 /* LearnLyrics.xcdatamodeld */; };
@@ -58,6 +59,7 @@
 		861EDECB1B2EFD430004702F /* Segue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Segue.swift; sourceTree = "<group>"; };
 		861EDECD1B2EFFF40004702F /* UIViewControllerExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewControllerExtensions.swift; sourceTree = "<group>"; };
 		861EDED31B2F15F30004702F /* SelectLyricsController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectLyricsController.swift; sourceTree = "<group>"; };
+		861EDED51B2F19800004702F /* FetchedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FetchedTableViewController.swift; sourceTree = "<group>"; };
 		86BF1D2D1B2D7D7B00C3EAC9 /* LearnLyrics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LearnLyrics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86BF1D301B2D7D7B00C3EAC9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		86BF1D351B2D7D7B00C3EAC9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			children = (
 				861EDECB1B2EFD430004702F /* Segue.swift */,
 				861EDECD1B2EFFF40004702F /* UIViewControllerExtensions.swift */,
+				861EDED51B2F19800004702F /* FetchedTableViewController.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -328,6 +331,7 @@
 				861EDED41B2F15F30004702F /* SelectLyricsController.swift in Sources */,
 				86BF1D311B2D7D7B00C3EAC9 /* AppDelegate.swift in Sources */,
 				861EDEBD1B2D9AE30004702F /* LyricsPart+CoreDataProperties.swift in Sources */,
+				861EDED61B2F19800004702F /* FetchedTableViewController.swift in Sources */,
 				86BF1D391B2D7D7B00C3EAC9 /* LearnLyrics.xcdatamodeld in Sources */,
 				861EDEC81B2ED9450004702F /* LyricsController.swift in Sources */,
 			);
