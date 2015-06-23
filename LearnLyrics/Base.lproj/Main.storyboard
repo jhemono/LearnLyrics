@@ -39,7 +39,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="uF3-Sh-d7y" kind="show" id="qQc-de-Kx5"/>
+                                    <segue destination="uF3-Sh-d7y" kind="show" identifier="PlaySong" id="qQc-de-Kx5"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -75,12 +75,15 @@
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="grU-qC-2bj">
                                 <rect key="frame" x="0.0" y="64" width="600" height="490"/>
                                 <connections>
-                                    <segue destination="7r5-xL-dtD" kind="embed" identifier="Embed Lyrics" id="OiI-4W-0MK"/>
+                                    <segue destination="mMq-GJ-HBd" kind="embed" identifier="Embed Lyrics" id="pHS-aJ-yUL"/>
                                 </connections>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="g1k-PO-7DG">
                                 <rect key="frame" x="285" y="562" width="30" height="30"/>
                                 <state key="normal" title="Play"/>
+                                <connections>
+                                    <action selector="playPause:" destination="uF3-Sh-d7y" eventType="touchUpInside" id="cq3-7D-2Mo"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -103,10 +106,78 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="playButton" destination="g1k-PO-7DG" id="5kN-wU-prP"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YkT-S9-FFy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2451" y="217"/>
+        </scene>
+        <!--Lyrics Controller-->
+        <scene sceneID="o8S-qR-LyU">
+            <objects>
+                <viewController id="mMq-GJ-HBd" customClass="LyricsController" customModule="LearnLyrics" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RcG-6y-jcs"/>
+                        <viewControllerLayoutGuide type="bottom" id="hIK-rx-JAM"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fj3-di-Erh">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="490"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="wWG-NI-fCH">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="490"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LyricsPartCell" textLabel="PlY-pv-ZPI" style="IBUITableViewCellStyleDefault" id="NGA-Bt-cVS">
+                                        <rect key="frame" x="0.0" y="22" width="600" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="NGA-Bt-cVS" id="Mrk-lR-QOa">
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PlY-pv-ZPI">
+                                                    <rect key="frame" x="15" y="0.0" width="570" height="43"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="mMq-GJ-HBd" id="jrX-HY-pRS"/>
+                                    <outlet property="delegate" destination="mMq-GJ-HBd" id="ReM-FZ-3LV"/>
+                                </connections>
+                            </tableView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LyricsCurcor" translatesAutoresizingMaskIntoConstraints="NO" id="FhJ-Om-K1J">
+                                <rect key="frame" x="0.0" y="213" width="64" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="64" id="GbL-4c-1Ch"/>
+                                    <constraint firstAttribute="width" constant="64" id="PoU-xY-r5h"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="FhJ-Om-K1J" firstAttribute="centerY" secondItem="wWG-NI-fCH" secondAttribute="centerY" id="HIb-FQ-6fs"/>
+                            <constraint firstAttribute="trailing" secondItem="wWG-NI-fCH" secondAttribute="trailing" id="KA1-tU-6uo"/>
+                            <constraint firstItem="wWG-NI-fCH" firstAttribute="leading" secondItem="fj3-di-Erh" secondAttribute="leading" id="de0-ad-ZQi"/>
+                            <constraint firstItem="wWG-NI-fCH" firstAttribute="bottom" secondItem="hIK-rx-JAM" secondAttribute="top" id="h5i-TQ-9eh"/>
+                            <constraint firstItem="FhJ-Om-K1J" firstAttribute="leading" secondItem="wWG-NI-fCH" secondAttribute="leading" id="qRY-tO-Ivq"/>
+                            <constraint firstItem="wWG-NI-fCH" firstAttribute="top" secondItem="RcG-6y-jcs" secondAttribute="bottom" id="ug7-i7-em5"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="wWG-NI-fCH" id="kUR-Ct-YsU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SuE-pz-Ebu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3199" y="217"/>
         </scene>
         <!--Languages-->
         <scene sceneID="lTQ-vx-3kP">
@@ -132,7 +203,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Languages" id="dI9-8l-9rz">
-                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="0ih-Ck-ltJ"/>
+                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="0ih-Ck-ltJ">
+                            <connections>
+                                <action selector="hitDone:" destination="VCz-t2-Npr" id="vWQ-Sf-MhH"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="R3J-Xq-sb6">
                             <connections>
                                 <segue destination="d6H-RV-oAe" kind="presentation" id="fjr-N1-X5U"/>
@@ -190,40 +265,6 @@
             </objects>
             <point key="canvasLocation" x="5565" y="-516"/>
         </scene>
-        <!--Collection View Controller-->
-        <scene sceneID="eUX-9L-Kci">
-            <objects>
-                <collectionViewController id="7r5-xL-dtD" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="CNM-bc-A4X">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="490"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="ruD-Zm-Vo8">
-                            <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                        </collectionViewFlowLayout>
-                        <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="LyricsPart Cell" id="ilC-03-XAW">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                            </collectionViewCell>
-                        </cells>
-                        <connections>
-                            <outlet property="dataSource" destination="7r5-xL-dtD" id="gE8-eg-geW"/>
-                            <outlet property="delegate" destination="7r5-xL-dtD" id="zkZ-pj-2c5"/>
-                        </connections>
-                    </collectionView>
-                </collectionViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="aEc-fj-ft1" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3171" y="217"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="zxv-XF-8WX">
             <objects>
@@ -279,4 +320,7 @@
             <point key="canvasLocation" x="4753" y="-516"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="LyricsCurcor" width="128" height="128"/>
+    </resources>
 </document>

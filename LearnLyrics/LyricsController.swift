@@ -12,9 +12,21 @@ protocol LyricsControllerDelegate {
     
 }
 
-class LyricsController: UICollectionViewController {
+class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var lyrics: Lyrics?
+    @IBOutlet weak var tableView: UITableView!
+    var lyrics: Lyrics? {
+        didSet {
+            if let partsSet = lyrics?.parts {
+                parts = partsSet.array as! [LyricsPart]
+            } else {
+                parts = []
+            }
+            tableView?.reloadData()
+        }
+    }
+    
+    var parts = [LyricsPart]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,14 +35,8 @@ class LyricsController: UICollectionViewController {
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
-        self.collectionView!.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.LyricsPartCellReuseIdentifier)
 
         // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     /*
@@ -43,60 +49,30 @@ class LyricsController: UICollectionViewController {
     }
     */
 
-    // MARK: UICollectionViewDataSource
-
-    override func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 0
+    // MARK: UITableViewDataSource
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return parts.count
     }
-
-
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of items
-        return 0
+    
+    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        let part = parts[indexPath.row]
+        
+        cell.textLabel?.text = part.text
     }
-
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCellWithReuseIdentifier(Constants.LyricsPartCellReuseIdentifier, forIndexPath: indexPath)
     
-        // Configure the cell
-    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(Constants.LyricsPartCellReuseIdentifier, forIndexPath: indexPath)
+        
+        configureCell(cell, atIndexPath: indexPath)
+        
         return cell
     }
 
-    // MARK: UICollectionViewDelegate
 
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(collectionView: UICollectionView, shouldHighlightItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(collectionView: UICollectionView, shouldSelectItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(collectionView: UICollectionView, shouldShowMenuForItemAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, canPerformAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) -> Bool {
-        return false
-    }
-
-    override func collectionView(collectionView: UICollectionView, performAction action: Selector, forItemAtIndexPath indexPath: NSIndexPath, withSender sender: AnyObject?) {
     
-    }
-    */
     
     private struct Constants {
-        static let LyricsPartCellReuseIdentifier = "LyricsPart Cell"
+        static let LyricsPartCellReuseIdentifier = "LyricsPartCell"
     }
 
 }

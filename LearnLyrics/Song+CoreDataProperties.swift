@@ -16,7 +16,7 @@ extension Song {
 
     @NSManaged var artist: String?
     @NSManaged var title: String?
-    @NSManaged var persistentIDMP: Int64
+    @NSManaged var persistentIDMP: NSNumber?
     @NSManaged var lyrics: NSSet?
 
 }

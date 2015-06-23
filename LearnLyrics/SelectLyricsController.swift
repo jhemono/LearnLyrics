@@ -9,7 +9,14 @@
 import UIKit
 import CoreData
 
+protocol SelectLyricsControllerDelegate {
+    func selectLyricsController(controller: SelectLyricsController, didSelectLyrics lyrics: Lyrics)
+    func selectLyricsControllerIsDone(controller: SelectLyricsController)
+}
+
 class SelectLyricsController: UITableViewController {
+    
+    var delegate: SelectLyricsControllerDelegate?
     
     var lyricsSet: NSMutableSet? {
         didSet { updateLyricsArray() }
@@ -69,7 +76,7 @@ class SelectLyricsController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("reuseIdentifier", forIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier("Language Cell", forIndexPath: indexPath)
         
         configureCell(cell, atIndexPath: indexPath)
 
@@ -81,13 +88,28 @@ class SelectLyricsController: UITableViewController {
 
             if let lyrics = lyricsArray?[indexPath.row].lyrics {
                 lyrics.managedObjectContext?.deleteObject(lyrics)
-                // Save Managed Object Context
+                do {
+                    try lyrics.managedObjectContext?.save()
+                } catch {
+                    fatalError("Can't save context")
+                }
                 lyricsArray?.removeAtIndex(indexPath.row)
                 tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
             }
         } else if editingStyle == .Insert {
             
         }    
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let selectedLyrics = lyricsArray?[indexPath.row].lyrics
+        delegate?.selectLyricsController(self, didSelectLyrics: selectedLyrics!)
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+
+    
+    @IBAction func hitDone(sender: UIBarButtonItem) {
+        delegate?.selectLyricsControllerIsDone(self)
     }
 
     /*

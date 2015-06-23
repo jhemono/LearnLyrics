@@ -141,6 +141,14 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
     // MARK: - Navigation
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "PlaySong" {
+            let playVC = segue.destinationViewController.contentViewController as! NowPlayingController
+            let cell = sender as! UITableViewCell
+            if let indexPath = tableView.indexPathForCell(cell) {
+                let song = fetchedResultsController.objectAtIndexPath(indexPath) as? Song
+                playVC.song = song
+            }
+        }
     }
     
     // MARK: - Adding songs from media picker
@@ -155,12 +163,42 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
         dismissViewControllerAnimated(true, completion: nil)
         
         let entity = NSEntityDescription.entityForName(Constants.SongEntity, inManagedObjectContext: managedObjectContext)
+        let lyricsEntity = NSEntityDescription.entityForName(Constants.LyricsEntity, inManagedObjectContext: managedObjectContext)
+        let lyricsPartEntity = NSEntityDescription.entityForName(Constants.LyricsPartEntity, inManagedObjectContext: managedObjectContext)
+
+        
+        // Formatters
+        var formatters = [String:NSNumberFormatter]()
+        for code in ["fr", "en", "nl", "de"] {
+            let locale = NSLocale(localeIdentifier: code)
+            let formatter = NSNumberFormatter()
+            formatter.locale = locale
+            formatter.numberStyle = .SpellOutStyle
+            formatters[code] = formatter
+        }
         
         for item in mediaItemCollection.items {
             let song = Song(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
             song.artist = item.valueForKey(MPMediaItemPropertyArtist) as? String
             song.title = item.valueForKey(MPMediaItemPropertyTitle) as? String
-            song.persistentIDMP = Int64((item.valueForKey(MPMediaItemPropertyPersistentID) as? UInt64) ?? 0)
+            song.persistentIDMP = item.valueForKey(MPMediaItemPropertyPersistentID) as? NSNumber
+            // Placeholder lyrics
+            let duration = (item.valueForKey(MPMediaItemPropertyPlaybackDuration) as? Double) ?? 0
+            
+            var lyricsSet = Set<Lyrics>()
+            for (code, formatter) in formatters {
+                let lyrics = Lyrics(entity: lyricsEntity!, insertIntoManagedObjectContext: managedObjectContext)
+                lyrics.language = code
+                let set = lyrics.mutableOrderedSetValueForKey("parts")
+                for (var d: Double = 0 ; d < duration; d += 1) {
+                    let lyricsPart = LyricsPart(entity: lyricsPartEntity!, insertIntoManagedObjectContext: managedObjectContext)
+                    lyricsPart.text = formatter.stringFromNumber(d)
+                    lyricsPart.timestamp = d
+                    set.addObject(lyricsPart)
+                }
+                lyricsSet.insert(lyrics)
+            }
+            song.lyrics = lyricsSet
         }
         
         do {
@@ -177,6 +215,8 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
     private struct Constants {
         static let SongCellReuseIdentifier = "Song Cell"
         static let SongEntity = "Song"
+        static let LyricsEntity = "Lyrics"
+        static let LyricsPartEntity = "LyricsPart"
     }
 
 }
