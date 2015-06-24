@@ -192,11 +192,42 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
         removeObserver(self, forKeyPath: "player.currentItem.duration", context: &nowPlayingControllerKVOContext)
         removeObserver(self, forKeyPath: "player.rate", context: &nowPlayingControllerKVOContext)
         removeObserver(self, forKeyPath: "player.currentItem.status", context: &nowPlayingControllerKVOContext)
+        
+        removeBoundaryObserver()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    //MARK: - Scrolling to lyrics part
+    
+    var timeObserverToken: AnyObject? = nil
+    
+    func removeBoundaryObserver() {
+        if let token = timeObserverToken {
+            player.removeTimeObserver(token)
+            timeObserverToken = nil
+        }
+    }
+    
+    func updateBoundaries() {
+        removeBoundaryObserver()
+        
+        guard let times = selectedLyrics?.parts?.array.map({ (object: AnyObject) -> NSValue in
+            let part = object as! LyricsPart
+            let time = CMTimeMakeWithSeconds((part.timestamp?.doubleValue)!, 1)
+            let value = NSValue(CMTime: time)
+            return value
+        }) else { return }
+        
+        let queue = dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)
+        timeObserverToken = player.addBoundaryTimeObserverForTimes(times, queue: queue) {
+            dispatch_async(dispatch_get_main_queue()) {
+                lyricsVC?.currentTime = currentTime
+            }
+        }
     }
     
     //MARK: - Key-Value Observing
@@ -227,6 +258,10 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
             let hasValidDuration = newDuration.isNumeric && newDuration.value != 0
             
             playButton.enabled = hasValidDuration
+            
+            if hasValidDuration {
+                updateBoundaries()
+            }
         }
         else if keyPath == "player.rate" {
             // Update `playButton` title.

@@ -163,13 +163,12 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
         dismissViewControllerAnimated(true, completion: nil)
         
         // Formatters
-        var formatters = [String:NSNumberFormatter]()
-        for code in ["fr", "en", "nl", "de"] {
-            let locale = NSLocale(localeIdentifier: code)
+        let formatters: [(String,NSNumberFormatter)] = ["fr", "en", "nl", "de"].map { code in
             let formatter = NSNumberFormatter()
+            let locale = NSLocale(localeIdentifier: code)
             formatter.locale = locale
             formatter.numberStyle = .SpellOutStyle
-            formatters[code] = formatter
+            return (code, formatter)
         }
         
         for item in mediaItemCollection.items {
@@ -177,23 +176,21 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
             song.artist = item.valueForKey(MPMediaItemPropertyArtist) as? String
             song.title = item.valueForKey(MPMediaItemPropertyTitle) as? String
             song.persistentIDMP = item.valueForKey(MPMediaItemPropertyPersistentID) as? NSNumber
+            
             // Placeholder lyrics
             let duration = (item.valueForKey(MPMediaItemPropertyPlaybackDuration) as? Double) ?? 0
             
-            var lyricsSet = Set<Lyrics>()
             for (code, formatter) in formatters {
                 let lyrics = Lyrics(context: managedObjectContext)
                 lyrics.language = code
-                let partsSet = lyrics.mutableParts
+                lyrics.ofSong = song
                 for (var d: Double = 0 ; d < duration; d += 1) {
                     let lyricsPart = LyricsPart(context: managedObjectContext)
                     lyricsPart.text = formatter.stringFromNumber(d)
-                    lyricsPart.timestamp = d
-                    partsSet.addObject(lyricsPart)
+                    lyricsPart.timestamp = NSNumber(double: d)
+                    lyricsPart.ofLyrics = lyrics
                 }
-                lyricsSet.insert(lyrics)
             }
-            song.lyrics = lyricsSet
         }
         
         do {

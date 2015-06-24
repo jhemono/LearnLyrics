@@ -15,7 +15,7 @@ import CoreData
 extension LyricsPart {
 
     @NSManaged var text: String?
-    @NSManaged var timestamp: Double
+    @NSManaged var timestamp: NSNumber?
     @NSManaged var ofLyrics: Lyrics?
 
 }
