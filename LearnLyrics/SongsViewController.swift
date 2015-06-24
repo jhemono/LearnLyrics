@@ -162,11 +162,6 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
     func mediaPicker(mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
         dismissViewControllerAnimated(true, completion: nil)
         
-        let entity = NSEntityDescription.entityForName(Constants.SongEntity, inManagedObjectContext: managedObjectContext)
-        let lyricsEntity = NSEntityDescription.entityForName(Constants.LyricsEntity, inManagedObjectContext: managedObjectContext)
-        let lyricsPartEntity = NSEntityDescription.entityForName(Constants.LyricsPartEntity, inManagedObjectContext: managedObjectContext)
-
-        
         // Formatters
         var formatters = [String:NSNumberFormatter]()
         for code in ["fr", "en", "nl", "de"] {
@@ -178,7 +173,7 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
         }
         
         for item in mediaItemCollection.items {
-            let song = Song(entity: entity!, insertIntoManagedObjectContext: managedObjectContext)
+            let song = Song(context: managedObjectContext)
             song.artist = item.valueForKey(MPMediaItemPropertyArtist) as? String
             song.title = item.valueForKey(MPMediaItemPropertyTitle) as? String
             song.persistentIDMP = item.valueForKey(MPMediaItemPropertyPersistentID) as? NSNumber
@@ -187,14 +182,14 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
             
             var lyricsSet = Set<Lyrics>()
             for (code, formatter) in formatters {
-                let lyrics = Lyrics(entity: lyricsEntity!, insertIntoManagedObjectContext: managedObjectContext)
+                let lyrics = Lyrics(context: managedObjectContext)
                 lyrics.language = code
-                let set = lyrics.mutableOrderedSetValueForKey("parts")
+                let partsSet = lyrics.mutableParts
                 for (var d: Double = 0 ; d < duration; d += 1) {
-                    let lyricsPart = LyricsPart(entity: lyricsPartEntity!, insertIntoManagedObjectContext: managedObjectContext)
+                    let lyricsPart = LyricsPart(context: managedObjectContext)
                     lyricsPart.text = formatter.stringFromNumber(d)
                     lyricsPart.timestamp = d
-                    set.addObject(lyricsPart)
+                    partsSet.addObject(lyricsPart)
                 }
                 lyricsSet.insert(lyrics)
             }
@@ -214,9 +209,6 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
     
     private struct Constants {
         static let SongCellReuseIdentifier = "Song Cell"
-        static let SongEntity = "Song"
-        static let LyricsEntity = "Lyrics"
-        static let LyricsPartEntity = "LyricsPart"
     }
 
 }

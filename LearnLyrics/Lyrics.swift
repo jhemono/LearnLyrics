@@ -10,7 +10,14 @@ import Foundation
 import CoreData
 
 class Lyrics: NSManagedObject {
-
-// Insert code here to add functionality to your managed object subclass
-
+    
+    convenience init(context: NSManagedObjectContext) {
+        let entityDescription = NSEntityDescription.entityForName("Lyrics", inManagedObjectContext: context)
+        self.init(entity: entityDescription!, insertIntoManagedObjectContext: context)
+    }
+    
+    var mutableParts: NSMutableOrderedSet {
+        return mutableOrderedSetValueForKey("parts")
+    }
+    
 }

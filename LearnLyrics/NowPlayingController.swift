@@ -288,7 +288,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
         case .SelectLyrics:
             let selectLyricsVC = segue.destinationViewController.contentViewController as! SelectLyricsController
             selectLyricsVC.delegate = self
-            selectLyricsVC.lyricsSet = song?.mutableSetValueForKey("lyrics")
+            selectLyricsVC.lyricsSet = song?.mutableLyrics
         case .EmbedLyrics:
             lyricsVC = segue.destinationViewController as? LyricsController
         }
@@ -318,10 +318,4 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
         presentViewController(alert, animated: true, completion: nil)
     }
 
-}
-
-private extension AVPlayer {
-    var isPlaying: Bool {
-        get { return rate != 0 }
-    }
 }
