@@ -153,21 +153,12 @@
                                     <outlet property="delegate" destination="mMq-GJ-HBd" id="ReM-FZ-3LV"/>
                                 </connections>
                             </tableView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LyricsCurcor" translatesAutoresizingMaskIntoConstraints="NO" id="FhJ-Om-K1J">
-                                <rect key="frame" x="0.0" y="213" width="64" height="64"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="GbL-4c-1Ch"/>
-                                    <constraint firstAttribute="width" constant="64" id="PoU-xY-r5h"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="FhJ-Om-K1J" firstAttribute="centerY" secondItem="wWG-NI-fCH" secondAttribute="centerY" id="HIb-FQ-6fs"/>
                             <constraint firstAttribute="trailing" secondItem="wWG-NI-fCH" secondAttribute="trailing" id="KA1-tU-6uo"/>
                             <constraint firstItem="wWG-NI-fCH" firstAttribute="leading" secondItem="fj3-di-Erh" secondAttribute="leading" id="de0-ad-ZQi"/>
                             <constraint firstItem="wWG-NI-fCH" firstAttribute="bottom" secondItem="hIK-rx-JAM" secondAttribute="top" id="h5i-TQ-9eh"/>
-                            <constraint firstItem="FhJ-Om-K1J" firstAttribute="leading" secondItem="wWG-NI-fCH" secondAttribute="leading" id="qRY-tO-Ivq"/>
                             <constraint firstItem="wWG-NI-fCH" firstAttribute="top" secondItem="RcG-6y-jcs" secondAttribute="bottom" id="ug7-i7-em5"/>
                         </constraints>
                     </view>
@@ -320,7 +311,4 @@
             <point key="canvasLocation" x="4753" y="-516"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="LyricsCurcor" width="128" height="128"/>
-    </resources>
 </document>

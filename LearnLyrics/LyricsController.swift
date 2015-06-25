@@ -9,10 +9,46 @@
 import UIKit
 
 protocol LyricsControllerDelegate {
-    
+    func lyricsControllerDidBeginScrubbing(controller: LyricsController)
+    func lyricsController(controller: LyricsController, didEndScrubbingToTime time: Double)
 }
 
 class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    var delegate: LyricsControllerDelegate?
+    
+    func beginScrubbing() {
+        delegate?.lyricsControllerDidBeginScrubbing(self)
+        // Should I do my thing so that I don't automatically scroll the current time is changed no matter what my delegate does ?
+    }
+    
+    func endScrubbing() {
+        let pointOnMiddle = CGPoint(x: 10, y: tableView.bounds.midY)
+        guard let indexPath = tableView.indexPathForRowAtPoint(pointOnMiddle) else { return }
+        let time = parts[indexPath.row].timestamp!.doubleValue
+        delegate?.lyricsController(self, didEndScrubbingToTime: time)
+    }
+    
+    var waitingForEndDecelerating = false
+    
+    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+        if !waitingForEndDecelerating {
+            beginScrubbing()
+        }
+    }
+    
+    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        if !decelerate && !waitingForEndDecelerating {
+            endScrubbing()
+        } else {
+            waitingForEndDecelerating = true
+        }
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        waitingForEndDecelerating = false
+        endScrubbing()
+    }
     
     @IBOutlet weak var tableView: UITableView!
     var lyrics: Lyrics? {
@@ -29,11 +65,16 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         didSet {
             for index in parts.indices {
                 if index.successor() == parts.endIndex || parts[index.successor()].timestamp?.doubleValue > currentTime {
-                    tableView?.scrollToRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), atScrollPosition: .Middle, animated: true)
+                    tableView?.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: true, scrollPosition: .Middle)
                     return
                 }
             }
         }
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Middle, animated: true)
+        delegate?.lyricsController(self, didEndScrubbingToTime: parts[indexPath.row].timestamp!.doubleValue)
     }
 
     override func viewDidLoad() {

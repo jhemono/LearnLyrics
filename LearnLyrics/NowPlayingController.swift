@@ -12,7 +12,7 @@ import AVFoundation
 
 private var nowPlayingControllerKVOContext = 0
 
-class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerDelegate {
+class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerDelegate, LyricsControllerDelegate {
     
     var song: Song? {
         didSet {
@@ -230,6 +230,23 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
         }
     }
     
+    //MARK: - Scrubbing
+    
+    var playerRateBeforeScrubbing: Float?
+    
+    func lyricsControllerDidBeginScrubbing(controller: LyricsController) {
+        playerRateBeforeScrubbing = player.rate
+        player.pause()
+    }
+    
+    func lyricsController(controller: LyricsController, didEndScrubbingToTime time: Double) {
+        currentTime = time
+        if playerRateBeforeScrubbing != nil {
+            player.rate = playerRateBeforeScrubbing!
+            playerRateBeforeScrubbing = nil
+        }
+    }
+    
     //MARK: - Key-Value Observing
     
     // Update our UI when player or `player.currentItem` changes.
@@ -326,6 +343,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
             selectLyricsVC.lyricsSet = song?.mutableLyrics
         case .EmbedLyrics:
             lyricsVC = segue.destinationViewController as? LyricsController
+            lyricsVC?.delegate = self
         }
     }
     
