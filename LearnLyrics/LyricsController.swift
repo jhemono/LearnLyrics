@@ -10,26 +10,52 @@ import UIKit
 
 protocol LyricsControllerDelegate {
     func lyricsControllerDidBeginScrubbing(controller: LyricsController)
-    func lyricsController(controller: LyricsController, didEndScrubbingToTime time: Double)
+    func lyricsController(controller: LyricsController, didScrubToTime time: Double)
+    func lyricsControllerDidEndScrubbing(controller: LyricsController)
 }
 
 class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var delegate: LyricsControllerDelegate?
-    
-    func beginScrubbing() {
-        delegate?.lyricsControllerDidBeginScrubbing(self)
-        // Should I do my thing so that I don't automatically scroll the current time is changed no matter what my delegate does ?
+    var lyrics: Lyrics? {
+        didSet {
+            let timestampOrder = NSSortDescriptor(key: "timestamp", ascending: true)
+            parts = lyrics?.parts?.sortedArrayUsingDescriptors([timestampOrder]) as? [LyricsPart] ?? []
+            tableView?.reloadData()
+        }
     }
     
-    func endScrubbing() {
+    private var parts = [LyricsPart]()
+    
+    var delegate: LyricsControllerDelegate?
+    
+    var currentTime: Double = 0 {
+        didSet {
+            for index in parts.indices {
+                if index.successor() == parts.endIndex || parts[index.successor()].timestamp?.doubleValue > currentTime {
+                    tableView?.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: true, scrollPosition: .Middle)
+                    return
+                }
+            }
+        }
+    }
+    
+    //MARK: Scrubbing
+    
+    private func beginScrubbing() {
+        delegate?.lyricsControllerDidBeginScrubbing(self)
+    }
+    
+    private func endScrubbing() {
         let pointOnMiddle = CGPoint(x: 10, y: tableView.bounds.midY)
         guard let indexPath = tableView.indexPathForRowAtPoint(pointOnMiddle) else { return }
         let time = parts[indexPath.row].timestamp!.doubleValue
-        delegate?.lyricsController(self, didEndScrubbingToTime: time)
+        delegate?.lyricsController(self, didScrubToTime: time)
+        delegate?.lyricsControllerDidEndScrubbing(self)
     }
     
-    var waitingForEndDecelerating = false
+    //MARK: UIScrollViewDelegate
+    
+    private var waitingForEndDecelerating = false
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         if !waitingForEndDecelerating {
@@ -50,32 +76,14 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         endScrubbing()
     }
     
-    @IBOutlet weak var tableView: UITableView!
-    var lyrics: Lyrics? {
-        didSet {
-            let timestampOrder = NSSortDescriptor(key: "timestamp", ascending: true)
-            parts = lyrics?.parts?.sortedArrayUsingDescriptors([timestampOrder]) as? [LyricsPart] ?? []
-            tableView?.reloadData()
-        }
-    }
-    
-    var parts = [LyricsPart]()
-    
-    var currentTime: Double = 0 {
-        didSet {
-            for index in parts.indices {
-                if index.successor() == parts.endIndex || parts[index.successor()].timestamp?.doubleValue > currentTime {
-                    tableView?.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: true, scrollPosition: .Middle)
-                    return
-                }
-            }
-        }
-    }
+    //MARK: - UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Middle, animated: true)
-        delegate?.lyricsController(self, didEndScrubbingToTime: parts[indexPath.row].timestamp!.doubleValue)
+        delegate?.lyricsController(self, didScrubToTime: parts[indexPath.row].timestamp!.doubleValue)
     }
+    
+    //MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,6 +97,7 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     // MARK: UITableViewDataSource
+    
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return parts.count
     }
@@ -106,6 +115,8 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         return cell
     }
+    
+    @IBOutlet weak var tableView: UITableView!
     
     private struct Constants {
         static let LyricsPartCellReuseIdentifier = "LyricsPartCell"

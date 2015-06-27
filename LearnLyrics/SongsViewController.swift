@@ -133,11 +133,6 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
         }
     }
 
-    // TODO: Check if I could set something on the tableView instead of providing that, for performance
-    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return false
-    }
-
     // MARK: - Navigation
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

@@ -49,7 +49,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
         }
     }
     
-    static let assetKeysRequiredToPlay = [
+    private static let assetKeysRequiredToPlay = [
         "playable",
         "hasProtectedContent"
     ]
@@ -122,7 +122,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     let player = AVPlayer()
     
-    var currentTime: Double {
+    private var currentTime: Double {
         get {
             return CMTimeGetSeconds(player.currentTime())
         }
@@ -132,7 +132,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
         }
     }
     
-    var duration: Double {
+    private var duration: Double {
         guard let currentItem = player.currentItem else { return 0.0 }
         
         return CMTimeGetSeconds(currentItem.duration)
@@ -155,15 +155,17 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     //MARK: - Lyrics
     
-    var selectedLyrics: Lyrics? {
+    private var selectedLyrics: Lyrics? {
         didSet {
             lyricsVC?.lyrics = selectedLyrics
         }
     }
     
-    var lyricsVC: LyricsController? {
+    private var lyricsVC: LyricsController? {
         didSet {
-            lyricsVC?.lyrics = selectedLyrics
+            guard let lyricsVC = lyricsVC else { return }
+            lyricsVC.lyrics = selectedLyrics
+            lyricsVC.delegate = self
         }
     }
     
@@ -177,7 +179,6 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        //syncPlayerUI()
         
         addObserver(self, forKeyPath: "player.currentItem.duration", options: [.New, .Initial], context: &nowPlayingControllerKVOContext)
         addObserver(self, forKeyPath: "player.rate", options: [.New, .Initial], context: &nowPlayingControllerKVOContext)
@@ -203,21 +204,21 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     //MARK: - Scrolling to lyrics part
     
-    var timeObserverToken: AnyObject? = nil
+    private var timeObserverToken: AnyObject? = nil
     
-    func removeBoundaryObserver() {
+    private func removeBoundaryObserver() {
         if let token = timeObserverToken {
             player.removeTimeObserver(token)
             timeObserverToken = nil
         }
     }
     
-    func updateBoundaries() {
+    private func updateBoundaries() {
         removeBoundaryObserver()
         
         guard let times = selectedLyrics?.parts?.array.map({ (object: AnyObject) -> NSValue in
             let part = object as! LyricsPart
-            let time = CMTimeMakeWithSeconds((part.timestamp?.doubleValue)!, 1)
+            let time = CMTimeMakeWithSeconds(part.timestamp!.doubleValue, 1)
             let value = NSValue(CMTime: time)
             return value
         }) else { return }
@@ -232,19 +233,22 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     //MARK: - Scrubbing
     
-    var playerRateBeforeScrubbing: Float?
+    private var playerRateBeforeScrubbing: Float?
     
     func lyricsControllerDidBeginScrubbing(controller: LyricsController) {
         playerRateBeforeScrubbing = player.rate
         player.pause()
     }
     
-    func lyricsController(controller: LyricsController, didEndScrubbingToTime time: Double) {
-        currentTime = time
+    func lyricsControllerDidEndScrubbing(controller: LyricsController) {
         if playerRateBeforeScrubbing != nil {
             player.rate = playerRateBeforeScrubbing!
             playerRateBeforeScrubbing = nil
         }
+    }
+    
+    func lyricsController(controller: LyricsController, didScrubToTime time: Double) {
+        currentTime = time
     }
     
     //MARK: - Key-Value Observing
@@ -343,7 +347,6 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
             selectLyricsVC.lyricsSet = song?.mutableLyrics
         case .EmbedLyrics:
             lyricsVC = segue.destinationViewController as? LyricsController
-            lyricsVC?.delegate = self
         }
     }
     
@@ -354,7 +357,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     // MARK: - Error Handling
     
-    func handleErrorWithMessage(message: String?, error: NSError? = nil) {
+    private func handleErrorWithMessage(message: String?, error: NSError? = nil) {
         NSLog("Error occured with message: \(message), error: \(error).")
         
         let alertTitle = NSLocalizedString("alert.error.title", comment: "Alert title for errors")
