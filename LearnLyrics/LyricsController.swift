@@ -28,10 +28,16 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     var delegate: LyricsControllerDelegate?
     
-    var currentTime: Double = 0 {
-        didSet {
+    var currentTime: Double {
+        get {
+            let pointOnMiddle = CGPoint(x: 10, y: tableView.bounds.midY)
+            guard let indexPath = tableView?.indexPathForRowAtPoint(pointOnMiddle) else { return 0 }
+            let time = parts[indexPath.row].timestamp!.doubleValue
+            return time
+        }
+        set {
             for index in parts.indices {
-                if index.successor() == parts.endIndex || parts[index.successor()].timestamp?.doubleValue > currentTime {
+                if index.successor() == parts.endIndex || parts[index.successor()].timestamp?.doubleValue > newValue {
                     tableView?.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: true, scrollPosition: .Middle)
                     return
                 }
@@ -46,10 +52,7 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     private func endScrubbing() {
-        let pointOnMiddle = CGPoint(x: 10, y: tableView.bounds.midY)
-        guard let indexPath = tableView.indexPathForRowAtPoint(pointOnMiddle) else { return }
-        let time = parts[indexPath.row].timestamp!.doubleValue
-        delegate?.lyricsController(self, didScrubToTime: time)
+        delegate?.lyricsController(self, didScrubToTime: currentTime)
         delegate?.lyricsControllerDidEndScrubbing(self)
     }
     
@@ -87,6 +90,8 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        tableView!.backgroundColor = UIColor.clearColor()
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -105,6 +110,10 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         let part = parts[indexPath.row]
         
+        cell.backgroundView?.backgroundColor = UIColor.clearColor()
+        cell.backgroundView?.opaque = false
+        cell.backgroundView?.alpha = 0.1
+        cell.backgroundColor = UIColor.clearColor()
         cell.textLabel?.text = part.text
     }
     
