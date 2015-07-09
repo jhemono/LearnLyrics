@@ -14,8 +14,7 @@ import CoreData
 
 extension Lyrics {
 
-    @NSManaged var language: String?
-    @NSManaged var ofSong: Song?
-    @NSManaged var parts: NSOrderedSet?
-
+    @NSManaged var language: String
+    @NSManaged var song: Song
+    @NSManaged var parts: Set<Part>
 }

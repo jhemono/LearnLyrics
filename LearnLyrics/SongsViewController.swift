@@ -157,15 +157,6 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
     func mediaPicker(mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
         dismissViewControllerAnimated(true, completion: nil)
         
-        // Formatters
-        let formatters: [(String,NSNumberFormatter)] = ["fr", "en", "nl", "de"].map { code in
-            let formatter = NSNumberFormatter()
-            let locale = NSLocale(localeIdentifier: code)
-            formatter.locale = locale
-            formatter.numberStyle = .SpellOutStyle
-            return (code, formatter)
-        }
-        
         for item in mediaItemCollection.items {
             let song = Song(context: managedObjectContext)
             song.artist = item.valueForKey(MPMediaItemPropertyArtist) as? String
@@ -175,15 +166,27 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
             // Placeholder lyrics
             let duration = (item.valueForKey(MPMediaItemPropertyPlaybackDuration) as? Double) ?? 0
             
-            for (code, formatter) in formatters {
+            var syncs = [Sync]()
+            for (var d: Double = 0 ; d < duration; d += 1) {
+                let sync = Sync(context: managedObjectContext)
+                sync.timestamp = NSNumber(double: d)
+                sync.song = song
+                syncs.append(sync)
+            }
+            
+            for code in ["fr", "en", "nl", "de"] {
+                let formatter = NSNumberFormatter()
+                formatter.locale = NSLocale(localeIdentifier: code)
+                formatter.numberStyle = .SpellOutStyle
+                
                 let lyrics = Lyrics(context: managedObjectContext)
                 lyrics.language = code
-                lyrics.ofSong = song
-                for (var d: Double = 0 ; d < duration; d += 1) {
-                    let lyricsPart = LyricsPart(context: managedObjectContext)
-                    lyricsPart.text = formatter.stringFromNumber(d)
-                    lyricsPart.timestamp = NSNumber(double: d)
-                    lyricsPart.ofLyrics = lyrics
+                lyrics.song = song
+                for sync in syncs {
+                    let part = Part(context: managedObjectContext)
+                    part.text = formatter.stringFromNumber(sync.timestamp)
+                    part.lyrics = lyrics
+                    part.sync = sync
                 }
             }
         }

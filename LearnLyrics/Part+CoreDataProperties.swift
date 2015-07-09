@@ -12,10 +12,10 @@
 import Foundation
 import CoreData
 
-extension LyricsPart {
+extension Part {
 
     @NSManaged var text: String?
-    @NSManaged var timestamp: NSNumber?
-    @NSManaged var ofLyrics: Lyrics?
+    @NSManaged var lyrics: Lyrics
+    @NSManaged var sync: Sync
 
 }

@@ -16,7 +16,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     var song: Song? {
         didSet {
-            selectedLyrics = song?.lyrics?.allObjects.first as? Lyrics
+            selectedLyrics = song?.lyrics.first
             getAsset()
         }
     }
@@ -157,14 +157,15 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     private var selectedLyrics: Lyrics? {
         didSet {
-            lyricsVC?.lyrics = selectedLyrics
+            lyricsVC?.lyrics = [selectedLyrics!]
         }
     }
     
     private var lyricsVC: LyricsController? {
         didSet {
             guard let lyricsVC = lyricsVC else { return }
-            lyricsVC.lyrics = selectedLyrics
+            lyricsVC.lyrics = [selectedLyrics!]
+            lyricsVC.syncs = song!.syncs
             lyricsVC.delegate = self
         }
     }
@@ -216,9 +217,8 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     private func updateBoundaries() {
         removeBoundaryObserver()
         
-        guard let times = selectedLyrics?.parts?.array.map({ (object: AnyObject) -> NSValue in
-            let part = object as! LyricsPart
-            let time = CMTimeMakeWithSeconds(part.timestamp!.doubleValue, 1)
+        guard let times = song?.syncs.map({ (sync: Sync) -> NSValue in
+            let time = CMTimeMakeWithSeconds(sync.timestamp.doubleValue, 1)
             let value = NSValue(CMTime: time)
             return value
         }) else { return }
@@ -254,7 +254,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     //MARK: - Key-Value Observing
     
     // Update our UI when player or `player.currentItem` changes.
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [NSObject : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
         // Make sure the this KVO callback was intended for this view controller.
         guard context == &nowPlayingControllerKVOContext else {
             super.observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)

@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8118.17" systemVersion="14E33b" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8118.17" systemVersion="14E46" minimumToolsVersion="Automatic">
     <entity name="Lyrics" representedClassName=".Lyrics" syncable="YES">
-        <attribute name="language" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="ofSong" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Song" inverseName="lyrics" inverseEntity="Song" syncable="YES"/>
-        <relationship name="parts" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="LyricsPart" inverseName="ofLyrics" inverseEntity="LyricsPart" syncable="YES"/>
+        <attribute name="language" attributeType="String" syncable="YES"/>
+        <relationship name="parts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LyricsPart" inverseName="lyrics" inverseEntity="LyricsPart" syncable="YES"/>
+        <relationship name="song" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Song" inverseName="lyrics" inverseEntity="Song" syncable="YES"/>
     </entity>
-    <entity name="LyricsPart" representedClassName=".LyricsPart" syncable="YES">
-        <attribute name="text" attributeType="String" syncable="YES"/>
-        <attribute name="timestamp" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
-        <relationship name="ofLyrics" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Lyrics" inverseName="parts" inverseEntity="Lyrics" syncable="YES"/>
+    <entity name="LyricsPart" representedClassName=".Part" syncable="YES">
+        <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="lyrics" maxCount="1" deletionRule="Nullify" destinationEntity="Lyrics" inverseName="parts" inverseEntity="Lyrics" syncable="YES"/>
+        <relationship name="sync" maxCount="1" deletionRule="Nullify" destinationEntity="Sync" inverseName="parts" inverseEntity="Sync" syncable="YES"/>
     </entity>
     <entity name="Song" representedClassName=".Song" syncable="YES">
         <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="persistentIDMP" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="lyrics" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Lyrics" inverseName="ofSong" inverseEntity="Lyrics" syncable="YES"/>
+        <relationship name="lyrics" toMany="YES" deletionRule="Cascade" destinationEntity="Lyrics" inverseName="song" inverseEntity="Lyrics" syncable="YES"/>
+        <relationship name="syncs" toMany="YES" deletionRule="Cascade" destinationEntity="Sync" inverseName="song" inverseEntity="Sync" syncable="YES"/>
+    </entity>
+    <entity name="Sync" syncable="YES">
+        <attribute name="timestamp" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <relationship name="parts" toMany="YES" deletionRule="Cascade" destinationEntity="LyricsPart" inverseName="sync" inverseEntity="LyricsPart" syncable="YES"/>
+        <relationship name="song" maxCount="1" deletionRule="Nullify" destinationEntity="Song" inverseName="syncs" inverseEntity="Song" syncable="YES"/>
     </entity>
     <elements>
         <element name="Lyrics" positionX="-36" positionY="9" width="128" height="90"/>
         <element name="LyricsPart" positionX="-54" positionY="-9" width="128" height="90"/>
-        <element name="Song" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="Song" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="Sync" positionX="-45" positionY="27" width="128" height="90"/>
     </elements>
 </model>

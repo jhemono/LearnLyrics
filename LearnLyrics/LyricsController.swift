@@ -16,15 +16,22 @@ protocol LyricsControllerDelegate {
 
 class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var lyrics: Lyrics? {
+    var lyrics: [Lyrics] = [] {
         didSet {
-            let timestampOrder = NSSortDescriptor(key: "timestamp", ascending: true)
-            parts = lyrics?.parts?.sortedArrayUsingDescriptors([timestampOrder]) as? [LyricsPart] ?? []
             tableView?.reloadData()
         }
     }
     
-    private var parts = [LyricsPart]()
+    var syncs: Set<Sync> = [] {
+        didSet {
+            syncArray = syncs.sort({ (lhs, rhs) -> Bool in
+                return lhs.timestamp.doubleValue < rhs.timestamp.doubleValue
+            })
+            tableView?.reloadData()
+        }
+    }
+    
+    private var syncArray = [Sync]()
     
     var delegate: LyricsControllerDelegate?
     
@@ -32,12 +39,12 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         get {
             let pointOnMiddle = CGPoint(x: 10, y: tableView.bounds.midY)
             guard let indexPath = tableView?.indexPathForRowAtPoint(pointOnMiddle) else { return 0 }
-            let time = parts[indexPath.row].timestamp!.doubleValue
+            let time = syncArray[indexPath.row].timestamp.doubleValue
             return time
         }
         set {
-            for index in parts.indices {
-                if index.successor() == parts.endIndex || parts[index.successor()].timestamp?.doubleValue > newValue {
+            for index in syncArray.indices {
+                if index.successor() == syncArray.endIndex || syncArray[index.successor()].timestamp.doubleValue > newValue {
                     tableView?.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: true, scrollPosition: .Middle)
                     return
                 }
@@ -79,11 +86,15 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         endScrubbing()
     }
     
+    func scrollViewShouldScrollToTop(scrollView: UIScrollView) -> Bool {
+        return false
+    }
+    
     //MARK: - UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Middle, animated: true)
-        delegate?.lyricsController(self, didScrubToTime: parts[indexPath.row].timestamp!.doubleValue)
+        delegate?.lyricsController(self, didScrubToTime: syncArray[indexPath.row].timestamp.doubleValue)
     }
     
     //MARK: - Lifecycle
@@ -104,17 +115,18 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     // MARK: UITableViewDataSource
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return parts.count
+        return syncArray.count
     }
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        let part = parts[indexPath.row]
+        let sync = syncArray[indexPath.row]
+        let parts = lyrics.map { (lyric) -> Part in
+            let intersection = lyric.parts.intersect(sync.parts)
+            return intersection.first!
+        }
         
-        cell.backgroundView?.backgroundColor = UIColor.clearColor()
-        cell.backgroundView?.opaque = false
-        cell.backgroundView?.alpha = 0.1
-        cell.backgroundColor = UIColor.clearColor()
-        cell.textLabel?.text = part.text
+        // The cast to String makes the reduction value String instead of String? like the type of text
+        cell.textLabel?.text = " ".join(parts.map { $0.text ?? "" })
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

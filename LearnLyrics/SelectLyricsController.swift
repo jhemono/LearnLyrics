@@ -35,7 +35,7 @@ class SelectLyricsController: UITableViewController {
         let locale = NSLocale.currentLocale()
         for object in lyricsSet! {
             let lyrics = object as! Lyrics
-            let localizedName = locale.displayNameForKey(NSLocaleLanguageCode, value: lyrics.language!)
+            let localizedName = locale.displayNameForKey(NSLocaleLanguageCode, value: lyrics.language)
             array.append(LyricsWithLocalizedName(lyrics: lyrics, localizedName: localizedName!))
         }
         array.sortInPlace { $0.localizedName <= $1.localizedName }
