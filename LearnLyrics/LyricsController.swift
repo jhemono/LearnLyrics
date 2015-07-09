@@ -125,7 +125,6 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
             return intersection.first!
         }
         
-        // The cast to String makes the reduction value String instead of String? like the type of text
         cell.textLabel?.text = " ".join(parts.map { $0.text ?? "" })
     }
     
