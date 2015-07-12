@@ -12,7 +12,7 @@ import CoreData
 class Part: NSManagedObject {
     
     convenience init(context: NSManagedObjectContext) {
-        let entityDescription = NSEntityDescription.entityForName("Part", inManagedObjectContext: context)
+        let entityDescription = NSEntityDescription.entityForName("LyricsPart", inManagedObjectContext: context)
         self.init(entity: entityDescription!, insertIntoManagedObjectContext: context)
     }
     

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8118.17" systemVersion="14E46" minimumToolsVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8154.4" systemVersion="15A215h" minimumToolsVersion="Automatic">
     <entity name="Lyrics" representedClassName=".Lyrics" syncable="YES">
         <attribute name="language" attributeType="String" syncable="YES"/>
         <relationship name="parts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LyricsPart" inverseName="lyrics" inverseEntity="LyricsPart" syncable="YES"/>
@@ -17,7 +17,7 @@
         <relationship name="lyrics" toMany="YES" deletionRule="Cascade" destinationEntity="Lyrics" inverseName="song" inverseEntity="Lyrics" syncable="YES"/>
         <relationship name="syncs" toMany="YES" deletionRule="Cascade" destinationEntity="Sync" inverseName="song" inverseEntity="Sync" syncable="YES"/>
     </entity>
-    <entity name="Sync" syncable="YES">
+    <entity name="Sync" representedClassName=".Sync" syncable="YES">
         <attribute name="timestamp" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
         <relationship name="parts" toMany="YES" deletionRule="Cascade" destinationEntity="LyricsPart" inverseName="sync" inverseEntity="LyricsPart" syncable="YES"/>
         <relationship name="song" maxCount="1" deletionRule="Nullify" destinationEntity="Song" inverseName="syncs" inverseEntity="Song" syncable="YES"/>
