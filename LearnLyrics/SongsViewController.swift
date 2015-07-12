@@ -151,6 +151,7 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
     @IBAction func addSongFromLibrary(sender: UIBarButtonItem) {
         let picker = MPMediaPickerController(mediaTypes: MPMediaType.Music)
         picker.delegate = self
+        picker.showsCloudItems = false
         presentViewController(picker, animated: true, completion: nil)
     }
     
