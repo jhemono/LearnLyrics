@@ -25,17 +25,17 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     private func getAsset() {
         guard let persistentId = song?.persistentIDMP else {
-            handleErrorWithMessage("This song has no persistent ID")
+            print("This song has no persistent ID")
             return
         }
         let predicate = MPMediaPropertyPredicate(value: persistentId, forProperty: MPMediaItemPropertyPersistentID)
         let query = MPMediaQuery(filterPredicates: [predicate])
         guard let mediaItem = query.items?.first else {
-            handleErrorWithMessage("Could no get a media item")
+            print("Could no get a media item")
             return
         }
         guard let assetURL = mediaItem.valueForProperty(MPMediaItemPropertyAssetURL) as? NSURL else {
-            handleErrorWithMessage("Cound no get url for media Item")
+            print("Cound no get url for media Item")
             return
         }
         asset = AVURLAsset(URL: assetURL)

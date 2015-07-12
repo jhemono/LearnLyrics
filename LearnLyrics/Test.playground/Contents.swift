@@ -1,5 +1,5 @@
 //: Playground - noun: a place where people can play
-
+/*
 import UIKit
 
 let codes = Set(NSLocale.availableLocaleIdentifiers())
@@ -16,3 +16,6 @@ numberFormatter.locale = locale
 numberFormatter.numberStyle = .SpellOutStyle
 
 numberFormatter.stringFromNumber(45)
+*/
+let truc = [1,3,2,4,6,5,8,7,9]
+truc[1]
