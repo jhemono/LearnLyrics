@@ -127,6 +127,10 @@ class SelectLyricsController: UITableViewController {
         } else {
             lyricsArray.insert(lyric, atIndex: destinationIndexPath.row)
         }
+        
+        if !sourceIndexPath.displayed && destinationIndexPath.displayed {
+            order.raiseLanguage(lyric)
+        }
     }
 
     @IBAction func hitDone(sender: UIBarButtonItem) {
