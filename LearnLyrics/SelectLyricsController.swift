@@ -10,7 +10,6 @@ import UIKit
 import CoreData
 
 protocol SelectLyricsControllerDelegate {
-    func selectLyricsController(controller: SelectLyricsController, didSelectLyrics lyrics: Lyrics)
     func selectLyricsControllerIsDone(controller: SelectLyricsController)
 }
 
@@ -18,34 +17,33 @@ class SelectLyricsController: UITableViewController {
     
     var delegate: SelectLyricsControllerDelegate?
     
-    var lyricsSet: NSMutableSet? {
-        didSet { updateLyricsArray() }
+    var song: Song! {
+        didSet {
+            displayed = song.mutableDisplayed
+            updateLyricsArray()
+        }
     }
     
-    private struct LyricsWithLocalizedName {
-        var lyrics: Lyrics
-        var localizedName: String
-    }
+    private var order = LanguageOrder.sharedOrder()
+    
+    private var displayed: NSMutableOrderedSet!
     
     // Sorted by their localized name
-    private var lyricsArray: [LyricsWithLocalizedName]?
+    private var lyricsArray: [Lyrics]!
+    
+    private let locale = NSLocale.currentLocale()
     
     private func updateLyricsArray() {
-        var array = [LyricsWithLocalizedName]()
-        let locale = NSLocale.currentLocale()
-        for object in lyricsSet! {
-            let lyrics = object as! Lyrics
-            let localizedName = locale.displayNameForKey(NSLocaleLanguageCode, value: lyrics.language)
-            array.append(LyricsWithLocalizedName(lyrics: lyrics, localizedName: localizedName!))
-        }
-        array.sortInPlace { $0.localizedName <= $1.localizedName }
-        lyricsArray = array
+        lyricsArray = order.orderLyrics(song.lyrics.subtract(displayed.set as! Set<Lyrics>))
     }
+    
+    private var numberOfDisplayed = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.reloadData()
+        tableView.setEditing(true, animated: false)
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -62,15 +60,29 @@ class SelectLyricsController: UITableViewController {
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 1
+        return 2
+    }
+    
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return section == 0 ? "On Display" : "Other Languages"
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return lyricsArray?.count ?? 0
+        if section == 0 {
+            return displayed.count
+        } else {
+            return lyricsArray.count
+        }
     }
 
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        guard let localizedName = lyricsArray?[indexPath.row].localizedName else { return }
+        let lyric: Lyrics
+        if indexPath.displayed {
+            lyric = displayed.objectAtIndex(indexPath.row) as! Lyrics
+        } else {
+            lyric = lyricsArray[indexPath.row]
+        }
+        guard let localizedName = locale.displayNameForKey(NSLocaleLanguageCode, value: lyric.language) else { return }
         
         cell.textLabel?.text = localizedName
     }
@@ -82,34 +94,55 @@ class SelectLyricsController: UITableViewController {
 
         return cell
     }
-
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        if editingStyle == .Delete {
-
-            if let lyrics = lyricsArray?[indexPath.row].lyrics {
-                lyrics.managedObjectContext?.deleteObject(lyrics)
-                do {
-                    try lyrics.managedObjectContext?.save()
-                } catch {
-                    fatalError("Can't save context")
-                }
-                lyricsArray?.removeAtIndex(indexPath.row)
-                tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-            }
-        } else if editingStyle == .Insert {
-            
-        }    
+    
+    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        return indexPath.displayed ? nil : indexPath
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let selectedLyrics = lyricsArray?[indexPath.row].lyrics
-        delegate?.selectLyricsController(self, didSelectLyrics: selectedLyrics!)
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
+        let indexPathBottomDisplayed = NSIndexPath(forRow: numberOfDisplayed, inSection: 0)
+        self.tableView(tableView, moveRowAtIndexPath: indexPath, toIndexPath: indexPathBottomDisplayed)
+        tableView.moveRowAtIndexPath(indexPath, toIndexPath: indexPathBottomDisplayed)
+    }
+    
+    override func tableView(tableView: UITableView, editingStyleForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCellEditingStyle {
+        return UITableViewCellEditingStyle.None
+    }
+    
+    override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
+        
+        guard sourceIndexPath != destinationIndexPath else { return }
+        
+        let lyric: Lyrics
+        if sourceIndexPath.displayed {
+            lyric = displayed.objectAtIndex(sourceIndexPath.row) as! Lyrics
+            displayed.removeObjectAtIndex(sourceIndexPath.row)
+        } else {
+            lyric = lyricsArray.removeAtIndex(sourceIndexPath.row)
+        }
+        
+        if destinationIndexPath.displayed {
+            displayed.insertObject(lyric, atIndex: destinationIndexPath.row)
+        } else {
+            lyricsArray.insert(lyric, atIndex: destinationIndexPath.row)
+        }
     }
 
-    
     @IBAction func hitDone(sender: UIBarButtonItem) {
         delegate?.selectLyricsControllerIsDone(self)
+    }
+    
+    //MARK: -Lifecyle
+    override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        do {
+            try song.managedObjectContext?.save()
+        } catch {
+            print("Error saving seledted languages")
+            abort()
+        }
     }
 
     /*
@@ -122,4 +155,14 @@ class SelectLyricsController: UITableViewController {
     }
     */
 
+}
+
+private extension NSIndexPath {
+    var displayed: Bool {
+        return section == 0
+    }
+    
+    func indexForNumberDisplayed(number: Int) -> Int {
+        return displayed ? row : row + number
+    }
 }

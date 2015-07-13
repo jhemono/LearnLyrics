@@ -190,6 +190,8 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
                     part.sync = sync
                 }
             }
+            
+            song.displayed = NSOrderedSet(object: song.lyrics.first!)
         }
         
         do {

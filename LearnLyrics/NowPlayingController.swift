@@ -16,7 +16,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     var song: Song? {
         didSet {
-            selectedLyrics = song?.lyrics.first
+            lyricsVC?.syncs = song?.syncs ?? []
             getAsset()
         }
     }
@@ -155,16 +155,10 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     //MARK: - Lyrics
     
-    private var selectedLyrics: Lyrics? {
-        didSet {
-            lyricsVC?.lyrics = [selectedLyrics!]
-        }
-    }
-    
     private var lyricsVC: LyricsController? {
         didSet {
             guard let lyricsVC = lyricsVC else { return }
-            lyricsVC.lyrics = [selectedLyrics!]
+            lyricsVC.lyrics = song?.displayed.array as? [Lyrics] ?? []
             lyricsVC.syncs = song!.syncs
             lyricsVC.delegate = self
         }
@@ -184,6 +178,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
         addObserver(self, forKeyPath: "player.currentItem.duration", options: [.New, .Initial], context: &nowPlayingControllerKVOContext)
         addObserver(self, forKeyPath: "player.rate", options: [.New, .Initial], context: &nowPlayingControllerKVOContext)
         addObserver(self, forKeyPath: "player.currentItem.status", options: [.New, .Initial], context: &nowPlayingControllerKVOContext)
+        addObserver(self, forKeyPath: "song.displayed", options: [.New, .Initial], context: &nowPlayingControllerKVOContext)
     }
     
     override func viewDidDisappear(animated: Bool) {
@@ -194,6 +189,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
         removeObserver(self, forKeyPath: "player.currentItem.duration", context: &nowPlayingControllerKVOContext)
         removeObserver(self, forKeyPath: "player.rate", context: &nowPlayingControllerKVOContext)
         removeObserver(self, forKeyPath: "player.currentItem.status", context: &nowPlayingControllerKVOContext)
+        removeObserver(self, forKeyPath: "song.displayed", context: &nowPlayingControllerKVOContext)
         
         removeBoundaryObserver()
     }
@@ -312,6 +308,8 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
             if newStatus == .Failed {
                 handleErrorWithMessage(player.currentItem?.error?.localizedDescription, error:player.currentItem?.error)
             }
+        } else if keyPath == "song.displayed" {
+            lyricsVC?.lyrics = song?.displayed.array as? [Lyrics] ?? []
         }
     }
     
@@ -331,11 +329,6 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     func selectLyricsControllerIsDone(controller: SelectLyricsController) {
         dismissViewControllerAnimated(true, completion: nil)
     }
-    
-    func selectLyricsController(controller: SelectLyricsController, didSelectLyrics lyrics: Lyrics) {
-        selectedLyrics = lyrics
-        dismissViewControllerAnimated(true, completion: nil)
-    }
 
     // MARK: - Navigation
     
@@ -344,7 +337,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
         case .SelectLyrics:
             let selectLyricsVC = segue.destinationViewController.contentViewController as! SelectLyricsController
             selectLyricsVC.delegate = self
-            selectLyricsVC.lyricsSet = song?.mutableLyrics
+            selectLyricsVC.song = song
         case .EmbedLyrics:
             lyricsVC = segue.destinationViewController as? LyricsController
         }

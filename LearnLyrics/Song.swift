@@ -20,4 +20,8 @@ class Song: NSManagedObject {
         return mutableSetValueForKey("lyrics")
     }
     
+    var mutableDisplayed: NSMutableOrderedSet {
+        return mutableOrderedSetValueForKey("displayed")
+    }
+    
 }

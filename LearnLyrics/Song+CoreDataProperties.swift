@@ -19,5 +19,6 @@ extension Song {
     @NSManaged var persistentIDMP: NSNumber?
     @NSManaged var lyrics: Set<Lyrics>
     @NSManaged var syncs: Set<Sync>
+    @NSManaged var displayed: NSOrderedSet
 
 }

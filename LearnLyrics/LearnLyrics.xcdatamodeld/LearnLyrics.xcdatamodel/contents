@@ -2,8 +2,9 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="8154.4" systemVersion="15A215h" minimumToolsVersion="Automatic">
     <entity name="Lyrics" representedClassName=".Lyrics" syncable="YES">
         <attribute name="language" attributeType="String" syncable="YES"/>
+        <relationship name="displayedOn" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Song" inverseName="displayed" inverseEntity="Song" syncable="YES"/>
         <relationship name="parts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="LyricsPart" inverseName="lyrics" inverseEntity="LyricsPart" syncable="YES"/>
-        <relationship name="song" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Song" inverseName="lyrics" inverseEntity="Song" syncable="YES"/>
+        <relationship name="song" maxCount="1" deletionRule="Nullify" destinationEntity="Song" inverseName="lyrics" inverseEntity="Song" syncable="YES"/>
     </entity>
     <entity name="LyricsPart" representedClassName=".Part" syncable="YES">
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
@@ -14,6 +15,7 @@
         <attribute name="artist" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="persistentIDMP" optional="YES" attributeType="Integer 64" syncable="YES"/>
         <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="displayed" toMany="YES" minCount="1" deletionRule="Cascade" ordered="YES" destinationEntity="Lyrics" inverseName="displayedOn" inverseEntity="Lyrics" syncable="YES"/>
         <relationship name="lyrics" toMany="YES" deletionRule="Cascade" destinationEntity="Lyrics" inverseName="song" inverseEntity="Lyrics" syncable="YES"/>
         <relationship name="syncs" toMany="YES" deletionRule="Cascade" destinationEntity="Sync" inverseName="song" inverseEntity="Sync" syncable="YES"/>
     </entity>
@@ -23,9 +25,9 @@
         <relationship name="song" maxCount="1" deletionRule="Nullify" destinationEntity="Song" inverseName="syncs" inverseEntity="Song" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Lyrics" positionX="-36" positionY="9" width="128" height="90"/>
+        <element name="Lyrics" positionX="-36" positionY="9" width="128" height="105"/>
         <element name="LyricsPart" positionX="-54" positionY="-9" width="128" height="90"/>
-        <element name="Song" positionX="-63" positionY="-18" width="128" height="120"/>
+        <element name="Song" positionX="-63" positionY="-18" width="128" height="135"/>
         <element name="Sync" positionX="-45" positionY="27" width="128" height="90"/>
     </elements>
 </model>
