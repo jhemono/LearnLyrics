@@ -43,11 +43,33 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
             return time
         }
         set {
-            let index = syncArray.indexOf { $0.timestamp.doubleValue <= newValue } ?? syncArray.startIndex
-            tableView?.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: true, scrollPosition: .Middle)
+            for index in syncArray.indices {
+                if index.successor() == syncArray.endIndex || syncArray[index.successor()].timestamp.doubleValue > newValue {
+                    tableView?.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: true, scrollPosition: .Middle)
+                    return
+                }
+            }
         }
     }
     
+    //MARK: Lyric Editing
+    
+    private var editingRow: NSIndexPath?
+    
+    @IBAction func longPress(sender: UILongPressGestureRecognizer) {
+        guard sender.state == .Began else { return }
+        
+        if let row = editingRow {
+            editingRow = nil
+            tableView.reloadRowsAtIndexPaths([row], withRowAnimation: UITableViewRowAnimation.Right)
+        } else {
+            let point = sender.locationInView(tableView)
+            guard let index = tableView.indexPathForRowAtPoint(point) else { return }
+            editingRow = index
+            tableView.reloadRowsAtIndexPaths([index], withRowAnimation: UITableViewRowAnimation.Left)
+            tableView.selectRowAtIndexPath(index, animated: true, scrollPosition: .Middle)
+        }
+    }
     //MARK: Scrubbing
     
     private func beginScrubbing() {
@@ -113,9 +135,18 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(Constants.LyricsPartCellReuseIdentifier, forIndexPath: indexPath)
+        let identifier: String
+        if indexPath == editingRow {
+            identifier = Constants.LyricsPartEditCellReuseIdentifier
+        } else {
+            identifier = Constants.LyricsPartCellReuseIdentifier
+        }
         
-        configureCell(cell, atIndexPath: indexPath)
+        let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
+        
+        if editingRow == nil {
+            configureCell(cell, atIndexPath: indexPath)
+        }
         
         return cell
     }
@@ -124,6 +155,7 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     private struct Constants {
         static let LyricsPartCellReuseIdentifier = "LyricsPartCell"
+        static let LyricsPartEditCellReuseIdentifier = "EditLyricsPartCell"
     }
 
 }
