@@ -111,12 +111,12 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         let sync = syncArray[indexPath.row]
-        let parts = lyrics.map { (lyric) -> Part in
+        let parts = lyrics.map { (lyric) -> Part? in
             let intersection = lyric.parts.intersect(sync.parts)
-            return intersection.first!
+            return intersection.first
         }
         
-        (cell as! SyncDisplayCell).lines = parts.map { $0.text }
+        (cell as! SyncDisplayCell).lines = parts.map { $0?.text }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
