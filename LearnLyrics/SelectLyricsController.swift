@@ -82,6 +82,10 @@ class SelectLyricsController: UITableViewController {
         return cell
     }
     
+    override func tableView(tableView: UITableView, canMoveRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return !(indexPath.displayed && displayed.count <= 1)
+    }
+    
     override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         return indexPath.displayed ? nil : indexPath
     }
