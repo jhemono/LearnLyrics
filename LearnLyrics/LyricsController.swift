@@ -24,7 +24,7 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     var syncs: Set<Sync> = [] {
         didSet {
-            syncArray = syncs.sort({ (lhs, rhs) -> Bool in
+            syncArray = syncs.sort({ (lhs, rhs) in
                 return lhs.timestamp.doubleValue < rhs.timestamp.doubleValue
             })
             tableView?.reloadData()
@@ -43,12 +43,8 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
             return time
         }
         set {
-            for index in syncArray.indices {
-                if index.successor() == syncArray.endIndex || syncArray[index.successor()].timestamp.doubleValue > newValue {
-                    tableView?.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: true, scrollPosition: .Middle)
-                    return
-                }
-            }
+            let index = syncArray.indexOf { $0.timestamp.doubleValue <= newValue } ?? syncArray.startIndex
+            tableView?.selectRowAtIndexPath(NSIndexPath(forRow: index, inSection: 0), animated: true, scrollPosition: .Middle)
         }
     }
     
@@ -109,14 +105,11 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         return syncArray.count
     }
     
-    func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
-        let sync = syncArray[indexPath.row]
-        let parts = lyrics.map { (lyric) -> Part? in
-            let intersection = lyric.parts.intersect(sync.parts)
-            return intersection.first
-        }
+    private func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
+        let syncParts = syncArray[indexPath.row].parts
+        let lines = lyrics.map { $0.parts.intersect(syncParts).first?.text }
         
-        (cell as! SyncDisplayCell).lines = parts.map { $0?.text }
+        (cell as! SyncDisplayCell).lines = lines
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
