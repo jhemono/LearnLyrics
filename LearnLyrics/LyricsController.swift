@@ -116,7 +116,7 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
             return intersection.first!
         }
         
-        cell.textLabel?.text = " ".join(parts.map { $0.text ?? "" })
+        (cell as! SyncDisplayCell).lines = parts.map { $0.text }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
