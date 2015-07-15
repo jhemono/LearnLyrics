@@ -28,7 +28,7 @@ class SelectLyricsController: UITableViewController {
     
     private var displayed: NSMutableOrderedSet!
     
-    // Sorted by their localized name
+    // Sorted by persisted order
     private var lyricsArray: [Lyrics]!
     
     private let locale = NSLocale.currentLocale()
@@ -37,24 +37,11 @@ class SelectLyricsController: UITableViewController {
         lyricsArray = order.orderLyrics(song.lyrics.subtract(displayed.set as! Set<Lyrics>))
     }
     
-    private var numberOfDisplayed = 0
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
         tableView.reloadData()
         tableView.setEditing(true, animated: false)
-
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
@@ -82,9 +69,9 @@ class SelectLyricsController: UITableViewController {
         } else {
             lyric = lyricsArray[indexPath.row]
         }
-        guard let localizedName = locale.displayNameForKey(NSLocaleLanguageCode, value: lyric.language) else { return }
+        let localizedName = locale.displayNameForKey(NSLocaleLanguageCode, value: lyric.language)
         
-        cell.textLabel?.text = localizedName
+        cell.textLabel?.text = localizedName ?? lyric.language
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -101,7 +88,7 @@ class SelectLyricsController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        let indexPathBottomDisplayed = NSIndexPath(forRow: numberOfDisplayed, inSection: 0)
+        let indexPathBottomDisplayed = NSIndexPath(forRow: displayed.count, inSection: 0)
         self.tableView(tableView, moveRowAtIndexPath: indexPath, toIndexPath: indexPathBottomDisplayed)
         tableView.moveRowAtIndexPath(indexPath, toIndexPath: indexPathBottomDisplayed)
     }
@@ -113,6 +100,11 @@ class SelectLyricsController: UITableViewController {
     override func tableView(tableView: UITableView, moveRowAtIndexPath sourceIndexPath: NSIndexPath, toIndexPath destinationIndexPath: NSIndexPath) {
         
         guard sourceIndexPath != destinationIndexPath else { return }
+        
+        if sourceIndexPath.displayed && destinationIndexPath.displayed {
+            displayed.moveObjectsAtIndexes(NSIndexSet(index: sourceIndexPath.row), toIndex: destinationIndexPath.row)
+            return
+        }
         
         let lyric: Lyrics
         if sourceIndexPath.displayed {
@@ -164,9 +156,5 @@ class SelectLyricsController: UITableViewController {
 private extension NSIndexPath {
     var displayed: Bool {
         return section == 0
-    }
-    
-    func indexForNumberDisplayed(number: Int) -> Int {
-        return displayed ? row : row + number
     }
 }
