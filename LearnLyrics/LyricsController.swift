@@ -14,7 +14,7 @@ protocol LyricsControllerDelegate {
     func lyricsControllerDidEndScrubbing(controller: LyricsController)
 }
 
-class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
     
     var lyrics: [Lyrics] = [] {
         didSet {
@@ -67,6 +67,13 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
             if let newRow = editingRow {
                 tableView.reloadRowsAtIndexPaths([newRow], withRowAnimation: UITableViewRowAnimation.Left)
                 tableView.selectRowAtIndexPath(newRow, animated: true, scrollPosition: .Middle)
+            } else {
+                do {
+                    try lyrics.first!.managedObjectContext!.save()
+                } catch {
+                    print("Could not save in lyrics controller", appendNewline: true)
+                    abort()
+                }
             }
             tableView.endUpdates()
         }
@@ -82,6 +89,21 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
             editingRow = tableView.indexPathForRowAtPoint(point)
         }
     }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        let languageIndex = textField.tag
+        let text = textField.text
+        guard let syncIndex = editingRow?.row else {
+            print("should not read textfield when not editing")
+            return
+        }
+        
+        let languageParts = lyrics[languageIndex].parts
+        let syncParts = syncArray[syncIndex].parts
+        let part = languageParts.intersect(syncParts).first!
+        part.text = text
+    }
+    
     //MARK: Scrubbing
     
     private func beginScrubbing() {
@@ -153,8 +175,12 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         let syncParts = syncArray[indexPath.row].parts
         let lines = lyrics.map { $0.parts.intersect(syncParts).first?.text }
         
-        (cell as? SyncDisplayCell)?.lines = lines
-        (cell as? SyncEditCell)?.lines = lines
+        if let editCell = cell as? SyncEditCell {
+            editCell.lines = lines
+            editCell.delegate = self
+        } else if let displayCell = cell as? SyncDisplayCell {
+            displayCell.lines = lines
+        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
