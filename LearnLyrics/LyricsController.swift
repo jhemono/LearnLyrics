@@ -35,12 +35,15 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     var delegate: LyricsControllerDelegate?
     
+    private var middleRowIndexPath: NSIndexPath? {
+        let pointOnMiddle = CGPoint(x: 10, y: tableView.bounds.midY)
+        return tableView?.indexPathForRowAtPoint(pointOnMiddle)
+    }
+    
     var currentTime: Double {
         get {
-            let pointOnMiddle = CGPoint(x: 10, y: tableView.bounds.midY)
-            guard let indexPath = tableView?.indexPathForRowAtPoint(pointOnMiddle) else { return 0 }
-            let time = syncArray[indexPath.row].timestamp.doubleValue
-            return time
+            guard let indexPath = middleRowIndexPath else { return 0 }
+            return syncArray[indexPath.row].timestamp.doubleValue
         }
         set {
             for index in syncArray.indices {
@@ -54,31 +57,46 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     //MARK: Lyric Editing
     
-    private var editingRow: NSIndexPath?
+    private var editingRow: NSIndexPath? {
+        didSet {
+            guard editingRow != oldValue else { return }
+            tableView.beginUpdates()
+            if let oldRow = oldValue {
+                tableView.reloadRowsAtIndexPaths([oldRow], withRowAnimation: UITableViewRowAnimation.Right)
+            }
+            if let newRow = editingRow {
+                tableView.reloadRowsAtIndexPaths([newRow], withRowAnimation: UITableViewRowAnimation.Left)
+                tableView.selectRowAtIndexPath(newRow, animated: true, scrollPosition: .Middle)
+            }
+            tableView.endUpdates()
+        }
+    }
     
     @IBAction func longPress(sender: UILongPressGestureRecognizer) {
         guard sender.state == .Began else { return }
         
-        if let row = editingRow {
+        if editingRow != nil {
             editingRow = nil
-            tableView.reloadRowsAtIndexPaths([row], withRowAnimation: UITableViewRowAnimation.Right)
         } else {
             let point = sender.locationInView(tableView)
-            guard let index = tableView.indexPathForRowAtPoint(point) else { return }
-            editingRow = index
-            tableView.reloadRowsAtIndexPaths([index], withRowAnimation: UITableViewRowAnimation.Left)
-            tableView.selectRowAtIndexPath(index, animated: true, scrollPosition: .Middle)
+            editingRow = tableView.indexPathForRowAtPoint(point)
         }
     }
     //MARK: Scrubbing
     
     private func beginScrubbing() {
-        delegate?.lyricsControllerDidBeginScrubbing(self)
+        if editingRow == nil {
+            delegate?.lyricsControllerDidBeginScrubbing(self)
+        }
     }
     
     private func endScrubbing() {
-        delegate?.lyricsController(self, didScrubToTime: currentTime)
-        delegate?.lyricsControllerDidEndScrubbing(self)
+        if editingRow == nil {
+            delegate?.lyricsController(self, didScrubToTime: currentTime)
+            delegate?.lyricsControllerDidEndScrubbing(self)
+        } else {
+            editingRow = middleRowIndexPath
+        }
     }
     
     //MARK: UIScrollViewDelegate
@@ -131,7 +149,8 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         let syncParts = syncArray[indexPath.row].parts
         let lines = lyrics.map { $0.parts.intersect(syncParts).first?.text }
         
-        (cell as! SyncDisplayCell).lines = lines
+        (cell as? SyncDisplayCell)?.lines = lines
+        (cell as? SyncEditCell)?.lines = lines
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -144,9 +163,7 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         let cell = tableView.dequeueReusableCellWithIdentifier(identifier, forIndexPath: indexPath)
         
-        if editingRow == nil {
-            configureCell(cell, atIndexPath: indexPath)
-        }
+        configureCell(cell, atIndexPath: indexPath)
         
         return cell
     }

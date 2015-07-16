@@ -186,25 +186,50 @@
                                             <outlet property="stack" destination="nOe-HL-dfY" id="9EJ-0j-rMd"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EditLyricsPartCell" textLabel="3js-jA-oH5" rowHeight="141" style="IBUITableViewCellStyleDefault" id="cTk-SM-Npm" customClass="SyncDisplayCell" customModule="LearnLyrics" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EditLyricsPartCell" rowHeight="141" id="cTk-SM-Npm" customClass="SyncEditCell" customModule="LearnLyrics" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="163" width="600" height="141"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cTk-SM-Npm" id="jSJ-AU-PBi">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="140"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Hello" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3js-jA-oH5">
-                                                    <rect key="frame" x="15" y="0.0" width="570" height="140"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="w2e-Mr-g28">
+                                                    <rect key="frame" x="8" y="8" width="584" height="124"/>
+                                                    <subviews>
+                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="S5K-ge-RcW">
+                                                            <rect key="frame" x="0.0" y="0.0" width="584" height="30"/>
+                                                            <animations/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                        </textField>
+                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tbl-H0-Mkm">
+                                                            <rect key="frame" x="0.0" y="47" width="584" height="30"/>
+                                                            <animations/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                        </textField>
+                                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="8bk-GY-r2a">
+                                                            <rect key="frame" x="0.0" y="94" width="584" height="30"/>
+                                                            <animations/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits"/>
+                                                        </textField>
+                                                    </subviews>
                                                     <animations/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                </stackView>
                                             </subviews>
                                             <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="w2e-Mr-g28" secondAttribute="trailing" id="Jau-ke-Z1N"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="w2e-Mr-g28" secondAttribute="bottom" id="KwF-wA-xk0"/>
+                                                <constraint firstItem="w2e-Mr-g28" firstAttribute="leading" secondItem="jSJ-AU-PBi" secondAttribute="leadingMargin" id="RlE-WB-Iv1"/>
+                                                <constraint firstItem="w2e-Mr-g28" firstAttribute="top" secondItem="jSJ-AU-PBi" secondAttribute="topMargin" id="ojI-Tv-AW0"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <animations/>
+                                        <connections>
+                                            <outlet property="stack" destination="w2e-Mr-g28" id="jHT-2j-Hnk"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
