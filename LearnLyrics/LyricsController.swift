@@ -129,8 +129,12 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     //MARK: - UITableViewDelegate
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Middle, animated: true)
-        delegate?.lyricsController(self, didScrubToTime: syncArray[indexPath.row].timestamp.doubleValue)
+        if editingRow == nil {
+            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Middle, animated: true)
+            delegate?.lyricsController(self, didScrubToTime: syncArray[indexPath.row].timestamp.doubleValue)
+        } else {
+            editingRow = indexPath
+        }
     }
     
     //MARK: - Lifecycle
