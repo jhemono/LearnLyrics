@@ -79,13 +79,16 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     @IBAction func longPress(sender: UILongPressGestureRecognizer) {
-        guard sender.state == .Began else { return }
-        
-        if editingRow != nil {
+        switch sender.state {
+        case .Began where editingRow != nil:
             editingRow = nil
-        } else {
+        case .Began:
+            fallthrough
+        case .Changed, .Ended where editingRow != nil:
             let point = sender.locationInView(tableView)
             editingRow = tableView.indexPathForRowAtPoint(point)
+        default:
+            break
         }
     }
     
