@@ -219,6 +219,7 @@
                                                 </stackView>
                                             </subviews>
                                             <animations/>
+                                            <color key="backgroundColor" red="0.94723045829999997" green="0.99609720710000005" blue="0.74993073939999999" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="w2e-Mr-g28" secondAttribute="trailing" id="Jau-ke-Z1N"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="w2e-Mr-g28" secondAttribute="bottom" id="KwF-wA-xk0"/>
