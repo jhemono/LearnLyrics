@@ -66,7 +66,6 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
             }
             if let newRow = editingRow {
                 tableView.reloadRowsAtIndexPaths([newRow], withRowAnimation: UITableViewRowAnimation.Left)
-                tableView.selectRowAtIndexPath(newRow, animated: true, scrollPosition: .Middle)
             } else {
                 do {
                     try lyrics.first!.managedObjectContext!.save()
@@ -117,7 +116,12 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
             delegate?.lyricsController(self, didScrubToTime: currentTime)
             delegate?.lyricsControllerDidEndScrubbing(self)
         } else {
+            if let editingRowIndexPath = editingRow
+                where tableView.indexPathsForVisibleRows!.contains(editingRowIndexPath) {
+                    return
+            }
             editingRow = middleRowIndexPath
+
         }
     }
     
