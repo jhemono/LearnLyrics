@@ -87,10 +87,18 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
+    private var firstReponderRow: NSIndexPath?
+    
+    func textFieldDidBeginEditing(textField: UITextField) {
+        assert(firstReponderRow == nil)
+        assert(editingRow != nil)
+        firstReponderRow = editingRow
+    }
+    
     func textFieldDidEndEditing(textField: UITextField) {
         let languageIndex = textField.tag
         let text = textField.text
-        guard let syncIndex = editingRow?.row else {
+        guard let syncIndex = firstReponderRow?.row else {
             print("should not read textfield when not editing")
             return
         }
@@ -99,6 +107,7 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         let syncParts = syncArray[syncIndex].parts
         let part = languageParts.intersect(syncParts).first!
         part.text = text
+        firstReponderRow = nil
     }
     
     //MARK: Scrubbing
