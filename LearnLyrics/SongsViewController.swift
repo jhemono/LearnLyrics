@@ -125,11 +125,7 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .Delete {
             managedObjectContext.deleteObject(fetchedResultsController.objectAtIndexPath(indexPath))
-            do {
-                try managedObjectContext.save()
-            } catch let error as NSError {
-                handleError(error)
-            }
+            managedObjectContext.saveIfHasChanges()
         }
     }
 
@@ -194,11 +190,7 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
             song.displayed = NSOrderedSet(object: song.lyrics.first!)
         }
         
-        do {
-            try managedObjectContext.save()
-        } catch let error as NSError {
-            handleError(error)
-        }
+        managedObjectContext.saveIfHasChanges()
     }
     
     func mediaPickerDidCancel(mediaPicker: MPMediaPickerController) {

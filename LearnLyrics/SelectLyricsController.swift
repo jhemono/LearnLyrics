@@ -136,13 +136,7 @@ class SelectLyricsController: UITableViewController {
     //MARK: -Lifecyle
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        do {
-            try song.managedObjectContext?.save()
-        } catch {
-            print("Error saving seledted languages")
-            abort()
-        }
+        song.managedObjectContext?.saveIfHasChanges()
     }
 
     /*

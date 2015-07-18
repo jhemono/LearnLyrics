@@ -67,12 +67,7 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
             if let newRow = editingRow {
                 tableView.reloadRowsAtIndexPaths([newRow], withRowAnimation: UITableViewRowAnimation.Left)
             } else {
-                do {
-                    try lyrics.first!.managedObjectContext!.save()
-                } catch {
-                    print("Could not save in lyrics controller", appendNewline: true)
-                    abort()
-                }
+               lyrics.first!.managedObjectContext!.saveIfHasChanges()
             }
             tableView.endUpdates()
         }

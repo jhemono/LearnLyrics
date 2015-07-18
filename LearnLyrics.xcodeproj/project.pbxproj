@@ -23,6 +23,7 @@
 		8635555F1B53FD56003D6481 /* LanguageOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8635555E1B53FD56003D6481 /* LanguageOrder.swift */; };
 		863997FE1B45BAD800C8C2E2 /* Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863997FD1B45BAD800C8C2E2 /* Sync.swift */; };
 		863998001B45BAF000C8C2E2 /* Sync+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 863997FF1B45BAF000C8C2E2 /* Sync+CoreDataProperties.swift */; };
+		867270B21B5A81D00038DB0D /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867270B11B5A81D00038DB0D /* Helpers.swift */; };
 		86A505781B5709CB0041C6B9 /* SyncEditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86A505771B5709CB0041C6B9 /* SyncEditCell.swift */; };
 		86B9B9D41B5693B0004E8947 /* SyncDisplayCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86B9B9D31B5693B0004E8947 /* SyncDisplayCell.swift */; };
 		86BF1D311B2D7D7B00C3EAC9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86BF1D301B2D7D7B00C3EAC9 /* AppDelegate.swift */; };
@@ -68,6 +69,7 @@
 		8635555E1B53FD56003D6481 /* LanguageOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LanguageOrder.swift; sourceTree = "<group>"; };
 		863997FD1B45BAD800C8C2E2 /* Sync.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sync.swift; sourceTree = "<group>"; };
 		863997FF1B45BAF000C8C2E2 /* Sync+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Sync+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		867270B11B5A81D00038DB0D /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		86781DA71B38535F0050A8A3 /* Test.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = Test.playground; sourceTree = "<group>"; };
 		86A505771B5709CB0041C6B9 /* SyncEditCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncEditCell.swift; sourceTree = "<group>"; };
 		86B9B9D31B5693B0004E8947 /* SyncDisplayCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SyncDisplayCell.swift; sourceTree = "<group>"; };
@@ -200,6 +202,7 @@
 		86F996D51B2D89E800CFBA12 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				867270B11B5A81D00038DB0D /* Helpers.swift */,
 				861EDEBF1B2DD50C0004702F /* Song+CoreDataProperties.swift */,
 				861EDEC01B2DD50C0004702F /* Song.swift */,
 				861EDEBB1B2D9AE30004702F /* Part+CoreDataProperties.swift */,
@@ -345,6 +348,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				861EDEC21B2DD50C0004702F /* Song.swift in Sources */,
+				867270B21B5A81D00038DB0D /* Helpers.swift in Sources */,
 				861EDEC61B2ED9120004702F /* NowPlayingController.swift in Sources */,
 				863997FE1B45BAD800C8C2E2 /* Sync.swift in Sources */,
 				861EDEC41B2DD6290004702F /* SongsViewController.swift in Sources */,
