@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol LyricsControllerDelegate {
+protocol LyricsControllerDelegate: class {
     func lyricsControllerDidBeginScrubbing(controller: LyricsController)
     func lyricsController(controller: LyricsController, didScrubToTime time: Double)
     func lyricsControllerDidEndScrubbing(controller: LyricsController)
@@ -33,7 +33,7 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     private var syncArray = [Sync]()
     
-    var delegate: LyricsControllerDelegate?
+    weak var delegate: LyricsControllerDelegate?
     
     private var middleRowIndexPath: NSIndexPath? {
         let pointOnMiddle = CGPoint(x: 10, y: tableView.bounds.midY)
