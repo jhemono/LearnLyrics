@@ -73,6 +73,8 @@ class LyricsController: UITableViewController, UITextFieldDelegate {
         }
     }
     
+    private var editingLanguageIndex: Int?
+    
     @IBAction func longPress(sender: UILongPressGestureRecognizer) {
         switch sender.state {
         case .Began where editingRow != nil:
@@ -93,6 +95,7 @@ class LyricsController: UITableViewController, UITextFieldDelegate {
         assert(firstReponderRow == nil)
         assert(editingRow != nil)
         firstReponderRow = editingRow
+        editingLanguageIndex = textField.tag
     }
     
     func textFieldDidEndEditing(textField: UITextField) {
@@ -188,6 +191,11 @@ class LyricsController: UITableViewController, UITextFieldDelegate {
         if let editCell = cell as? SyncEditCell {
             editCell.lines = lines
             editCell.delegate = self
+            if editingLanguageIndex == nil {
+                editingLanguageIndex = 0
+            }
+            editingLanguageIndex = min(editingLanguageIndex!, editCell.stack.arrangedSubviews.count - 1)
+            (editCell.stack.arrangedSubviews[editingLanguageIndex!] as! UITextField).becomeFirstResponder()
         } else if let displayCell = cell as? SyncDisplayCell {
             displayCell.lines = lines
         }
