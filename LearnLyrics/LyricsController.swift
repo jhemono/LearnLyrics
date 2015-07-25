@@ -14,7 +14,7 @@ protocol LyricsControllerDelegate: class {
     func lyricsControllerDidEndScrubbing(controller: LyricsController)
 }
 
-class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+class LyricsController: UITableViewController, UITextFieldDelegate {
     
     var lyrics: [Lyrics] = [] {
         didSet {
@@ -136,13 +136,13 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     private var waitingForEndDecelerating = false
     
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    override func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         if !waitingForEndDecelerating {
             beginScrubbing()
         }
     }
     
-    func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+    override func scrollViewDidEndDragging(scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if !decelerate && !waitingForEndDecelerating {
             endScrubbing()
         } else {
@@ -150,18 +150,18 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         waitingForEndDecelerating = false
         endScrubbing()
     }
     
-    func scrollViewShouldScrollToTop(scrollView: UIScrollView) -> Bool {
+    override func scrollViewShouldScrollToTop(scrollView: UIScrollView) -> Bool {
         return false
     }
     
     //MARK: - UITableViewDelegate
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if editingRow == nil {
             tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: .Middle, animated: true)
             delegate?.lyricsController(self, didScrubToTime: syncArray[indexPath.row].timestamp.doubleValue)
@@ -177,8 +177,7 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
     }
     
     // MARK: UITableViewDataSource
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return syncArray.count
     }
     
@@ -194,7 +193,7 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let identifier: String
         if indexPath == editingRow {
             identifier = Constants.LyricsPartEditCellReuseIdentifier
@@ -208,8 +207,6 @@ class LyricsController: UIViewController, UITableViewDelegate, UITableViewDataSo
         
         return cell
     }
-    
-    @IBOutlet weak var tableView: UITableView!
     
     private struct Constants {
         static let LyricsPartCellReuseIdentifier = "LyricsPartCell"
