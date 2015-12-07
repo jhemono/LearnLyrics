@@ -51,15 +51,11 @@ class SelectLyricsController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return section == 0 ? "On Display" : "Other Languages"
+        return (section == 0) ? "On Display" : "Other Languages"
     }
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            return displayed.count
-        } else {
-            return lyricsArray.count
-        }
+        return (section == 0) ? displayed.count : lyricsArray.count
     }
 
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {

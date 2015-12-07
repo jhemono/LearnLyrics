@@ -43,9 +43,9 @@ class LanguageOrder {
     
     func orderLyrics(set: Set<Lyrics>) -> [Lyrics] {
         var list = languageList
-        var codeSet = Set(set.map { $0.language }).subtract(list)
+        let codeSet = Set(set.map { $0.language }).subtract(list)
         if !codeSet.isEmpty {
-            list.extend(codeSet)
+            list.appendContentsOf(codeSet)
             languageList = list
         }
         var dict = [String: Lyrics]()

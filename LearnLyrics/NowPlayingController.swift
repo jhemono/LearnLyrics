@@ -43,9 +43,9 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
     
     private var asset: AVURLAsset? {
         didSet {
-            guard let newAsset = asset else { return }
-            
-            asynchronouslyLoadURLAsset(newAsset)
+            if let newAsset = asset {
+                asynchronouslyLoadURLAsset(newAsset)
+            }
         }
     }
     
@@ -222,7 +222,7 @@ class NowPlayingController: UIViewController, SafeSegue, SelectLyricsControllerD
         let queue = dispatch_get_global_queue(QOS_CLASS_USER_INTERACTIVE, 0)
         timeObserverToken = player.addBoundaryTimeObserverForTimes(times, queue: queue) {
             dispatch_async(dispatch_get_main_queue()) {
-                lyricsVC?.currentTime = currentTime
+                self.lyricsVC?.currentTime = self.currentTime
             }
         }
     }
