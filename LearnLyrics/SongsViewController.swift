@@ -10,7 +10,7 @@ import UIKit
 import CoreData
 import MediaPlayer
 
-class SongsViewController: UITableViewController, NSFetchedResultsControllerDelegate, MPMediaPickerControllerDelegate {
+class SongsViewController: UITableViewController, FetchedTableViewController, MPMediaPickerControllerDelegate {
     
     // MARK: - Fetched Results Controller
     
@@ -30,39 +30,6 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
         
         return controller
     }()
-    
-    func controllerWillChangeContent(controller: NSFetchedResultsController) {
-        tableView.beginUpdates()
-    }
-    
-    func controller(controller: NSFetchedResultsController, didChangeObject anObject: NSManagedObject, atIndexPath indexPath: NSIndexPath?, forChangeType type: NSFetchedResultsChangeType, newIndexPath: NSIndexPath?) {
-        switch type {
-        case .Insert:
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-        case .Delete:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-        case .Update:
-            configureCell(tableView.cellForRowAtIndexPath(indexPath!)!, atIndexPath: indexPath!)
-        case .Move:
-            tableView.deleteRowsAtIndexPaths([indexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-            tableView.insertRowsAtIndexPaths([newIndexPath!], withRowAnimation: UITableViewRowAnimation.Automatic)
-        }
-    }
-    
-    func controller(controller: NSFetchedResultsController, didChangeSection sectionInfo: NSFetchedResultsSectionInfo, atIndex sectionIndex: Int, forChangeType type: NSFetchedResultsChangeType) {
-        switch type {
-        case .Insert:
-            tableView.insertSections(NSIndexSet(index: sectionIndex), withRowAnimation: UITableViewRowAnimation.Automatic)
-        case .Delete:
-            tableView.deleteSections(NSIndexSet(index: sectionIndex), withRowAnimation: UITableViewRowAnimation.Automatic)
-        default:
-            break
-        }
-    }
-    
-    func controllerDidChangeContent(controller: NSFetchedResultsController) {
-        tableView.endUpdates()
-    }
     
     // MARK: - Lifecycle
     
@@ -88,20 +55,7 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
     // MARK: - Table view data source
-
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return fetchedResultsController.sections?.count ?? 0
-    }
-
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return fetchedResultsController.sections?[section].numberOfObjects ?? 0
-    }
     
     func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         let song = fetchedResultsController.objectAtIndexPath(indexPath) as! Song
@@ -116,10 +70,6 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
         configureCell(cell, atIndexPath: indexPath)
         
         return cell
-    }
-    
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return fetchedResultsController.sections?[section].name
     }
     
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
@@ -155,39 +105,7 @@ class SongsViewController: UITableViewController, NSFetchedResultsControllerDele
         dismissViewControllerAnimated(true, completion: nil)
         
         for item in mediaItemCollection.items {
-            let song = Song(context: managedObjectContext)
-            song.artist = item.valueForKey(MPMediaItemPropertyArtist) as? String
-            song.title = item.valueForKey(MPMediaItemPropertyTitle) as? String
-            song.persistentIDMP = item.valueForKey(MPMediaItemPropertyPersistentID) as? NSNumber
-            
-            // Placeholder lyrics
-            let duration = (item.valueForKey(MPMediaItemPropertyPlaybackDuration) as? Double) ?? 0
-            
-            var syncs = [Sync]()
-            for (var d: Double = 0 ; d < duration; d += 1) {
-                let sync = Sync(context: managedObjectContext)
-                sync.timestamp = NSNumber(double: d)
-                sync.song = song
-                syncs.append(sync)
-            }
-            
-            for code in ["fr", "en", "nl", "de"] {
-                let formatter = NSNumberFormatter()
-                formatter.locale = NSLocale(localeIdentifier: code)
-                formatter.numberStyle = .SpellOutStyle
-                
-                let lyrics = Lyrics(context: managedObjectContext)
-                lyrics.language = code
-                lyrics.song = song
-                for sync in syncs {
-                    let part = Part(context: managedObjectContext)
-                    part.text = formatter.stringFromNumber(sync.timestamp)
-                    part.lyrics = lyrics
-                    part.sync = sync
-                }
-            }
-            
-            song.displayed = NSOrderedSet(object: song.lyrics.first!)
+            let _ = Song(context: managedObjectContext, mediaItem: item)
         }
         
         managedObjectContext.saveIfHasChanges()
