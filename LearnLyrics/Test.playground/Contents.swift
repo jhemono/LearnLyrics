@@ -18,4 +18,8 @@ numberFormatter.numberStyle = .SpellOutStyle
 numberFormatter.stringFromNumber(45)
 */
 let truc = [1,3,2,4,6,5,8,7,9]
-truc[1]
+print(truc.reverse().indices)
+
+for d in 0.stride(through: 36.5, by: 1) {
+    print(d)
+}
